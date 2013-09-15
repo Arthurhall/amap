@@ -1,0 +1,10 @@
+delivery:
+    pattern:  /
+    defaults: { _controller: "AmapPanierBundle:Delivery:index" }
+
+delivery_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "AmapPanierBundle:Delivery:show" }
+
+
+

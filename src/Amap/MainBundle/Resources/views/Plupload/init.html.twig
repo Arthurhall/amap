@@ -1,0 +1,70 @@
+
+{% if css is defined and css %}
+    
+    {% stylesheets 
+       '@AmapMainBundle/Resources/public/plupload/css/main.css'    
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    
+{% endif %}
+
+
+{% if js is defined and js %}
+    
+    {% javascripts 
+        '@AmapMainBundle/Resources/public/plupload/js/plupload.js'
+        '@AmapMainBundle/Resources/public/plupload/js/plupload.html5.js'
+        '@AmapMainBundle/Resources/public/plupload/js/plupload.flash.js'
+        '@AmapMainBundle/Resources/public/plupload/js/main.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    
+    
+    {% if options is not defined %}
+        {% set options = {} %}
+    {% endif %}
+    
+    {% if entity is defined %}
+        {% set article_id = entity.id %}
+    {% else %} 
+        {% set article_id = null %}
+    {% endif %} 
+    
+    {% set defaults = {
+        'ref':          'edit', 
+        'dir':          'image', 
+        'article_id':   article_id, 
+        'user':         user.id, 
+        'url_delete':   path('image_delete'),
+        'form_action':  path('image_update') 
+    } %}
+    
+    
+    
+    {% set options = defaults|merge(options) %}
+            
+    <script type="text/javascript">
+    var uploader = new plupload.Uploader({
+        runtimes : 'html5,flash',
+        contains : 'plupload',
+        browse_button : 'browse',
+        drop_element : 'drop_area',
+        url : '{{ path('plupload') }}',
+        flash_swf_url : '/bundles/amapmain/plupload/js/plupload.flash.swf',
+        multipart : true,
+        urlstream_upload : true,
+        max_file_size : '50mb',
+        resize : {width:1100, height:1100, quality:100},
+        multipart_params : {
+            ref: '{{options.ref}}', 
+            dir: '{{options.dir}}', 
+            article_id: '{{options.article_id}}', 
+            user: '{{options.user}}', 
+            url_delete: '{{options.url_delete}}',
+            form_action: '{{options.form_action}}'
+        }
+    });
+    </script>
+{% endif %}

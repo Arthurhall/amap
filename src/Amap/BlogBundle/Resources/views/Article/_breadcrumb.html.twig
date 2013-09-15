@@ -1,0 +1,5 @@
+<ul class="breadcrumb">
+        <li><a href="{{ path('home') }}"><i class="icon-home"></i> Home</a> <span class="divider">></span></li>
+        <li><a href="{{ path('blog') }}">Blog</a> <span class="divider">></span></li>
+        <li><a href="{{ path('blog_category', {'slug': category.slug}) }}">{{ category.title }}</a></li>
+    </ul>

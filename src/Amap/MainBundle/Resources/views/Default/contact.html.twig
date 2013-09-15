@@ -1,0 +1,63 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+
+{% block title %}
+    {{ parent() }} - Contact
+{% endblock %}
+
+
+{% block endPage %}
+    {{ parent() }}
+	{{ tinymce_init() }}
+{% endblock %}
+
+
+{% block content %}
+
+	<h1>Contact</h1>
+	
+	   
+    
+	{% if app.session.flashbag.has('messageSent') %}
+	
+        <div class="alert alert-success">
+        	{% for flashMessage in app.session.flashbag.get('messageSent') %}
+
+                {{ flashMessage }}
+
+            {% endfor %}
+        </div>
+        
+    {% else %}
+        
+        {% form_theme form 'AmapMainBundle:Form:fields.html.twig' %}
+    
+        {{form_errors(form)}}
+    
+		<div class="box">
+		<form class="clearfix form" action="{{ path('contact')}}" method="post" {{ form_enctype(form) }}>
+			
+			{# form_widget(form) #}
+			
+			<div class="left">
+				{{ form_row(form.civilite) }}
+				{{ form_row(form.prenom) }}
+				{{ form_row(form.nom) }}
+				{{ form_row(form.email) }}
+				{{ form_row(form.tel) }}
+			</div>
+			
+			<div class="right">
+				{{ form_row(form.sujet) }}
+				{{ form_row(form.message) }}
+				<input class="btn btn-success" type="submit" value="Envoyer" />
+			</div>
+			
+			{{ form_rest(form) }}
+			<br class="clear" />
+			
+		</form>
+		</div>
+	{% endif %}
+	
+{% endblock content %}

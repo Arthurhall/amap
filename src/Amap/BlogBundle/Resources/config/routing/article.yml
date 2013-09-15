@@ -1,0 +1,35 @@
+blog:
+    pattern:  /
+    defaults: { _controller: "AmapBlogBundle:Article:index" }
+
+blog_show:
+    pattern:  /{slug}/show
+    defaults: { _controller: "AmapBlogBundle:Article:show" }
+
+blog_new:
+    pattern:  /new
+    defaults: { _controller: "AmapBlogBundle:Article:new" }
+
+blog_create:
+    pattern:  /create
+    defaults: { _controller: "AmapBlogBundle:Article:create" }
+    requirements: { _method: post }
+
+blog_edit:
+    pattern:  /{slug}/edit
+    defaults: { _controller: "AmapBlogBundle:Article:edit" }
+
+blog_update:
+    pattern:  /{slug}/update
+    defaults: { _controller: "AmapBlogBundle:Article:update" }
+    requirements: { _method: post|put }
+
+blog_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "AmapBlogBundle:Article:delete" }
+    requirements: { _method: post|delete }
+
+blog_category:
+    pattern:  /categorie/{slug}
+    defaults: { _controller: "AmapBlogBundle:Article:showByCategory" }
+    

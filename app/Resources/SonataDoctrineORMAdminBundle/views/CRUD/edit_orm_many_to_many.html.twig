@@ -1,0 +1,123 @@
+
+{% if form.vars.name == 'image' %}
+    
+    {{ form_errors(form) }}
+    
+    <style type="text/css">
+    <!--
+    	.thumbnail.selected {
+    		border-color:#0088CC;
+    	}
+    	#field_container_{{ id }} {
+    		height:250px;
+    		overflow: auto;
+    	}
+    -->
+    </style>
+	{% if sonata_admin.field_description.associationadmin %}
+	    <div id="field_container_{{ id }}" class="field-container clearfix well">
+	        <span id="field_widget_{{ id }}" >
+	            
+	            {% for input in form.vars.choices %}
+		            
+		            {% if input.label %}
+			            {% set path = '/' ~ input.label %}
+			            <a 
+	                        href="#" 
+	                        class="thumbnail pull-left {% if input.value in value %}selected{% endif %}" 
+	                        data-value="{{input.value}}"  
+	                        style="margin-right:10px;margin-bottom:10px;" 
+	                    >
+	                        <img src="{{ path | apply_filter('small_thumb') }}" />
+			            </a>
+			            <input 
+	                        type="hidden" 
+	                        class="id{{input.value}}" 
+	                        name="{% if input.value in value %}{{form.vars.full_name}}{% endif %}" 
+	                        value="{% if input.value in value %}{{input.value}}{% endif %}" 
+	                    />
+                    {% endif %}
+                    
+	            {% endfor %}
+	            
+	            <script type="text/javascript">
+                <!--
+                $(document).ready(function() 
+                {
+                    $('a.thumbnail.pull-left').click(function(e)
+                    {
+                        e.preventDefault();
+                        var _val = $(this).attr('data-value');
+                        var _input = $('input.id'+_val);
+                        var _inputVal = _input.val();
+                        var _name = '{{form.vars.full_name}}';
+                        
+                        if(_inputVal == '') {
+                            _input.val(_val);
+                            _input.attr('name', _name);
+                            $(this).addClass('selected');
+                        }
+                        if(_inputVal == _val) {
+                            _input.val('');
+                            _input.attr('name', '');
+                            $(this).removeClass('selected');
+                        }
+                    });
+                });
+                -->
+                </script>
+	            
+	        </span>
+	
+	        <span id="field_actions_{{ id }}" class="field-actions">
+	            {% if sonata_admin.field_description.associationadmin.hasRoute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+	                <a
+	                    href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+	                    onclick="return start_field_dialog_form_add_{{ id }}(this);"
+	                    class="btn sonata-ba-action"
+	                    title="{{ btn_add|trans({}, btn_catalogue) }}"
+	                    style="margin-top: 10px;"
+	                    >
+	                    <i class="icon-plus"></i>
+	                    {{ btn_add|trans({}, btn_catalogue) }}
+	                </a>
+	            {% endif %}
+	        </span>
+	
+	        <div style="display: none" id="field_dialog_{{ id }}">
+	        </div>
+	    </div>
+	
+	    {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+	{% endif %}
+
+{% else %}
+    
+    {% if sonata_admin.field_description.associationadmin %}
+	    <div id="field_container_{{ id }}" class="field-container">
+	        <span id="field_widget_{{ id }}" >
+	            {{ form_widget(form) }}
+	        </span>
+	
+	        <span id="field_actions_{{ id }}" class="field-actions">
+	            {% if sonata_admin.field_description.associationadmin.hasRoute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+	                <a
+	                    href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+	                    onclick="return start_field_dialog_form_add_{{ id }}(this);"
+	                    class="btn sonata-ba-action"
+	                    title="{{ btn_add|trans({}, btn_catalogue) }}"
+	                    >
+	                    <i class="icon-plus"></i>
+	                    {{ btn_add|trans({}, btn_catalogue) }}
+	                </a>
+	            {% endif %}
+	        </span>
+	
+	        <div style="display: none" id="field_dialog_{{ id }}">
+	        </div>
+	    </div>
+	
+	    {% include 'SonataDoctrineORMAdminBundle:CRUD:edit_orm_many_association_script.html.twig' %}
+	{% endif %}
+    
+{% endif %}

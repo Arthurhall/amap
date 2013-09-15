@@ -1,0 +1,118 @@
+#plupload
+{
+	width:100%;
+	color:#aaa;
+}
+
+#drop_area
+{
+	border:2px dashed #aaa;
+	width:100%;
+	height: 150px;
+	text-align:center;
+}
+div#drop_area.hover
+{
+	border:3px dashed #ff9c00;
+}
+#drop_area p
+{
+	padding:40px 0 0px 0;
+	font-weight: bold;
+	font-size:18px;
+}
+#drop_area p .small
+{
+    font-size:12px;
+    font-weight:normal;
+}
+
+/* #plupload a#upload, */
+#drop_area a#browse
+{
+	border:1px solid #bbb;
+	text-decoration:none;
+	padding:3px 8px;
+	color:#464646;
+	border-radius:10px;
+}
+
+#file_list
+{
+	margin-top:20px;
+}
+
+
+.file
+{
+	border: 1px solid #dfdfdf;
+	padding: 10px;
+	line-height:27px;
+	margin-bottom:10px;
+	position:relative;
+	min-height: 55px;
+}
+.file label
+{
+	display:inline-block;
+	width: 70px;	
+}
+.file .thumbnail 
+{
+    margin-right:15px;
+}
+.file form
+{
+    float:left;
+    margin-bottom: 0;
+    margin-top:5px;
+}
+.file .btn-group 
+{
+    position:absolute;
+    top:10px;
+    right:10px;
+}
+.file .alert {
+    width:75%;
+}
+.file .btn.vitrine {
+    margin-left:74px;
+}
+
+.progress_bar,
+.progress
+{
+	border-radius:25px;
+	-moz-border-radius:25px;
+	-webkit-border-radius:25px;
+	-o-border-radius:25px;
+	-ms-border-radius:25px;
+	-khtml-border-radius:25px; 
+}
+.progress_bar
+{
+	display:none;
+	position:absolute;
+	
+	top:16px; 
+	right:18px;
+	
+	width:100px; height:15px;
+	border-radius:25px;
+	background-color:#abb2bc;
+	
+	box-shadow:inset 0px 1px 2px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow:inset 0px 1px 2px 0px rgba(0,0,0,0.5);
+	-webkit-box-shadow:inset 0px 1px 2px 0px rgba(0,0,0,0.5);
+	-o-box-shadow:inset 0px 1px 2px 0px rgba(0,0,0,0.5);
+	-ms-box-shadow:inset 0px 1px 2px 0px rgba(0,0,0,0.5);
+}
+.progress
+{
+	position:absolute;
+	height:13px; width:10%;
+	border:1px solid #464646;
+	
+	background:url('/ajax-loader.gif') repeat -10px -3px;
+}

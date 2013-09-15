@@ -1,0 +1,16 @@
+
+<div class="well">
+<ul class="nav nav-list">
+	
+	{% for date, row in articles %}
+	   <li class="nav-header">{{date}}</li>
+    
+	    {% for id, article in row %}
+	    	<li><a href="#"><i class="icon-book"></i>{{article.title}}</a></li>
+	    {% endfor %}
+	    
+	    <li class="divider"></li>
+    {% endfor %}
+</ul>
+</div>
+

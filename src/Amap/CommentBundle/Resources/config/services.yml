@@ -1,0 +1,7 @@
+parameters:
+#    amap_comment.example.class: Amap\CommentBundle\Example
+
+services:
+#    amap_comment.example:
+#        class: %amap_comment.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

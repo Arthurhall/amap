@@ -1,0 +1,225 @@
+
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+<div class="sonata-user-show">
+		
+	<ul class="nav nav-tabs">
+		<li class="active first">
+			<a href="#" id="edit_profile" class="prevent-default">
+				<i class="icon-user"></i>
+				Mon Profil
+			</a>
+		</li>
+		<li>
+		   <a href="#" id="articles" class="prevent-default">
+		   	  <i class="icon-book"></i>
+		   	  Mes Articles
+		   </a>
+		</li>
+		<li>
+	       <a href="#" id="comments" class="prevent-default">
+                <i class="icon-comment"></i>
+		       	Mes Commentaires
+	       </a>
+	    </li>
+		<li>
+			<a href="#" id="commandes" class="prevent-default">
+				<i class="icon-shopping-cart"></i>
+				Mes Commandes
+			</a>
+	    </li>
+	    <li class="last">
+            <a href="#" id="permanences" class="prevent-default">
+            	<i class="icon-calendar"></i>
+            	Les Permanences
+            </a>
+        </li>
+	    <!--<li class="last">
+            <a href="{{path('blog_new')}}">
+            	<i class="icon-share"></i>
+            	Ecrire dans le Blog
+            </a>
+        </li>-->
+	</ul>
+	
+	<div id="wrapp_edit_profile" class="wrapper">
+		{{ render(controller('SonataUserBundle:Profile:editProfile')) }}
+	</div>
+	
+	<div id="wrapp_articles" class="hide wrapper">
+		{% if is_granted('ROLE_MEMBER') %}
+			<a href="{{ path('blog_new') }}" class="btn">
+				<i class="icon-pencil"></i>
+				Ecire dans le Blog
+			</a>
+			<hr class="divider" />
+			
+		    {% include 'AmapBlogBundle:Article:_list.html.twig' with {'entities': articles} %}
+		{% else %}
+            <p class="alert alert-block">Vous devez être <strong>&laquo; Membre de l'amap &raquo;</strong> pour accéder à ce contenu</p>
+	    {% endif %}
+	</div>
+	
+	<div id="wrapp_comments" class="hide wrapper">
+		{% if is_granted('ROLE_MEMBER') %}
+            {% include 'AmapCommentBundle:Comment:_list.html.twig' with {'entities': comments} %}
+	    {% else %}
+            <p class="alert alert-block">Vous devez être <strong>&laquo; Membre de l'amap &raquo;</strong> pour accéder à ce contenu</p>
+        {% endif %}
+	</div>
+	
+	<div id="wrapp_commandes" class="hide wrapper">
+		{% if is_granted('ROLE_MEMBER') %}
+            {% include 'AmapPanierBundle:Commande:_list.html.twig' with {'entities': commandes} %}
+		{% else %}
+            <p class="alert alert-block">Vous devez être <strong>&laquo; Membre de l'amap &raquo;</strong> pour accéder à ce contenu</p>
+        {% endif %}
+	</div>
+	
+	<div id="wrapp_permanences" class="hide wrapper">
+		
+		{% if is_granted('ROLE_MEMBER') %}
+		<table class="table table-striped table-hover table-bordered">
+	        <!--<caption><span class="label label-success">Les Permanences</span></caption>-->
+	        <thead>
+	        	<tr>
+	        		<th>
+	        			Date
+	        		</th>
+	        		<th>
+                        Les Inscrits
+                    </th>
+                    <th>
+                    	
+                    </th>
+	        	</tr>
+	        </thead>
+	        <tbody>
+	        
+			{% for date in dates %}
+			
+				{% set class_tr = 'error' %}
+				{% set is_18_full = false %}
+                {% set is_19_full = false %}
+				{% set users_html = '' %}
+				{% set already_in_18 = false %}
+				{% set already_in_19 = false %}
+				
+				{% for perm in permanences if perm.deliveryDate|date('Y-m-d') == date|date('Y-m-d') %}
+				    
+				    {% set class_tr = perm.usersCountClass %}
+				    {% set is_18_full = perm.is18Full %}
+				    {% set is_19_full = perm.is19Full %}
+	                
+	                {% for usr in perm.users %}
+                        {% for heure in perm.userDetail[ usr.id ] %}
+                        
+                            {% set users_html = users_html ~ ' 
+                                <li> 
+                                    <i class="icon-check"></i>
+                                    <strong>' ~ usr.firstName ~ ' ' ~ usr.lastName ~ '</strong> 
+                                    à <span class="badge badge-success">' ~ heure ~ 'h</span> 
+                                </li>' 
+                            %}
+                                
+                        {% endfor %}
+                    {% endfor %}
+                    
+                    {% if perm.hasUserFor18(user.id) %}
+                        {% set already_in_18 = true %}
+                    {% endif %}
+                    
+                    {% if perm.hasUserFor19(user.id) %}
+                        {% set already_in_19 = true %}
+                    {% endif %}
+	                
+				{% endfor %} {# End Perm #}
+				
+				
+                <tr class="{{ class_tr }}">
+	                <td>
+		               <strong>{{ date|localizeddate('full', 'none') }}</strong>
+		            </td>
+		            <td class="users">
+		            	
+		            	<ul>
+                        {{ users_html | raw }}
+                        </ul>
+                        
+                    </td>
+                    <td>
+                    	{% if class_tr != 'success' %}
+                    	   
+                    	   {% if not is_18_full and not already_in_18 %}
+	                    	<form class="form create_permanence" action="{{ path('permanence_create') }}" method="post" {{ form_enctype(form_permanence) }}>
+	                    		<input type="hidden" class="date" name="{{form_permanence.deliveryDate.vars.full_name}}" value="{{ date|date('Y-m-d') }}" />
+	                    		<input type="hidden" class="heure" name="{{form_permanence.heure.vars.full_name}}" value="18" />
+	                    		<input type="hidden" name="{{form_permanence._token.vars.full_name}}" value="{{form_permanence._token.vars.value}}" />
+		                    	<div class="control-group">
+			                        <div class="controls">
+				                    	<button type="submit" class="btn btn-success">
+						                    <i class="icon-check icon-white"></i>
+						                    Je m'inscris pour <strong>18h</strong> 
+						                </button>
+						            </div>
+				                </div>
+			                </form> 
+			                {% endif %}
+			                
+			                {% if not is_19_full and not already_in_19 %}
+			                <form class="form create_permanence" action="{{ path('permanence_create') }}" method="post" {{ form_enctype(form_permanence) }}>
+			                	<input type="hidden" class="date" name="{{form_permanence.deliveryDate.vars.full_name}}" value="{{ date|date('Y-m-d') }}" />
+			                	<input type="hidden" class="heure" name="{{form_permanence.heure.vars.full_name}}" value="19" />
+			                	<input type="hidden" name="{{form_permanence._token.vars.full_name}}" value="{{form_permanence._token.vars.value}}" />
+				                <div class="control-group">
+		                            <div class="controls">
+						                <button type="submit" class="btn btn-success">
+				                            <i class="icon-check icon-white"></i>
+				                            Je m'inscris pour <strong>19h</strong> 
+				                        </button>
+		                            </div>
+		                        </div>
+	                        </form>
+	                        {% endif %}
+	                        
+                        {% else %}
+                            <span class="label label-success">Complet</span>
+                        {% endif %}
+                    </td>
+                </tr>
+			{% endfor %}
+            
+            </tbody>
+        </table>
+        {% else %}
+            <p class="alert alert-block">Vous devez être <strong>&laquo; Membre de l'amap &raquo;</strong> pour accéder à ce contenu</p>
+        {% endif %}
+        
+        
+        {#
+		{% form_theme form_permanence 'AmapMainBundle:Form:fields.html.twig' %}
+		
+		{{ form_errors(form_permanence) }}
+		
+        <form class="form form-horizontal" action="{{ path('permanence_create') }}" method="post" {{ form_enctype(form_permanence) }}>
+        	<legend>S'inscrire à une permanence</legend>
+        
+            {{ form_widget(form_permanence) }}
+            
+            <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-success">
+                    <i class="icon-check icon-white"></i>
+                    Envoyer 
+                </button>
+            </div>
+            </div>
+        </form>
+        #}
+        
+    </div>
+
+    
+</div>
+{% endblock %}

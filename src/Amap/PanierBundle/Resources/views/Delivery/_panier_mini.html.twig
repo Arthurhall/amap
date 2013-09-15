@@ -1,0 +1,51 @@
+{% if email is not defined %}
+    {% set email = false %}
+{% endif %}
+
+<table class="table table-striped table-hover table-bordered">
+    <caption><span class="label label-success">Demi Panier</caption>
+    <thead>
+        <tr>
+            <th>
+                Produit
+            </th>
+            <th>
+                Quantité
+            </th>
+            <th class="aright">
+                Prix
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in entity.panierMini.product %}
+        <tr>
+            <td>{{product.productVegetable}}</td>
+            <td>{{product.quantity}} {{product.quantityType}}</td>
+            <td class="aright">{{product.priceFormat}}{{product.devise}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2">
+                {{ 'gift'|icon() }}
+                Total remisé à 
+                {% set price = entity.panierMini.discountedPriceFormat ~ entity.panierMini.devise %}
+                <strong>{{price}}</strong>
+            </td>
+            <td class="aright">
+                <strong>
+                {{entity.panierMini.PriceFormat}}{{entity.panierMini.devise}}
+                </strong>
+            </td>
+        </tr>
+        {% if not email %}
+        <tr>
+            <td colspan="3">
+                <div id="chart_div_panier_mini" style="width: 500px; height: 250px;"></div>
+            </td>
+        </tr>
+        {% endif %}
+    </tfoot>
+</table>

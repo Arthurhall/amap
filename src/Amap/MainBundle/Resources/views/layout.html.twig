@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Amap d'Issy{% endblock %}</title>
+        <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+        
+        
+        {% stylesheets 
+           '@AmapMainBundle/Resources/public/css/*' 
+           '@AmapMainBundle/Resources/less/*' 
+           'css/bootstrap.css'
+           '@FOSCommentBundle/Resources/assets/css/comments.css'
+        %}
+           <link rel="stylesheet" href="{{ asset_url }}">
+        {% endstylesheets %}
+        
+        
+        {% block head %}
+        {% endblock %}
+        
+        
+        {% if app.environment == 'prod' %}
+        
+            {# include 'AmapMainBundle:Inc:analytics.html.twig' #}
+            
+        {% endif %}
+        
+
+    </head>
+    <body>
+        
+        <div id="website" class="{{ app.request.attributes.get('_route') }}">
+            
+            
+            <div id="contain">
+            
+                <header class="header">
+                {% include 'AmapMainBundle:Inc:header.html.twig' %}
+                </header>
+
+                <section class="prim container">
+                    
+                    <div class="row-fluid">
+                        
+                        
+                        
+                        <div class="span8">
+                            {% block content %}
+                            {% endblock content %}
+                        </div>
+                        
+                        <aside class="span4">
+                            {% block sidebar %}
+                            {% include 'AmapMainBundle:Inc:sidebar.html.twig' %}
+                            
+                            {# render (controller('AmapMainBundle:Default:renderSidebarMenu')) #}
+                            {% endblock sidebar %}
+                        </aside>
+                        
+                    
+                    </div>
+                    
+                </section>
+                
+                <br class="clear" />
+            
+            </div><!--contain-->
+            
+        </div><!-- #website -->
+        
+        
+        <footer id="footer">
+        {% include 'AmapMainBundle:Inc:footer.html.twig' %}
+        </footer>
+        
+    
+    
+    {% block endPage %}
+        
+        {% javascripts 
+            '@AmapMainBundle/Resources/public/js/jquery-1.9.1.min.js'
+            '@AmapMainBundle/Resources/public/js/*.js'
+            'js/bootstrap.js'
+            'bundles/fosjsrouting/js/router.js'
+            'js/fos_js_routes.js'
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        
+    {% endblock %}
+    
+    </body>
+</html>

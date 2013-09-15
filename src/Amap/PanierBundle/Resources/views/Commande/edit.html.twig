@@ -1,0 +1,37 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+{% block title %}
+    {{parent()}}
+    - Commande : Modifier
+{% endblock %}
+
+{% form_theme edit_form 'AmapMainBundle:Form:fields.html.twig' %}
+{% form_theme delete_form 'AmapMainBundle:Form:fields.html.twig' %}
+
+{% block content -%}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ path('home') }}"><i class="icon-home"></i> Home</a> <span class="divider">></span></li>
+        <li><a href="{{ path('sonata_user_profile_show') }}">Mon Compte</a> <span class="divider">></span></li>
+        <li><a href="{{ path('commande_edit', {'id': entity.id}) }}">Modifier : {{entity}}</a> <span class="divider">|</span></li>
+        <li><a href="{{ path('commande_show', {'id': entity.id}) }}"><i class="icon-eye-open"></i></a></li>
+    </ul>
+
+    <form class="form" action="{{ path('commande_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    	
+    	<input type="hidden" name="_method" value="PUT" />
+    	{% include 'AmapPanierBundle:Commande:_form.html.twig' with{'form': edit_form, 'panier_addon': entity.panierAddon} %}
+    	
+    </form>
+    
+    
+    {#
+    <form action="{{ path('commande_delete', { 'id': entity.id }) }}" method="post">
+        <input type="hidden" name="_method" value="DELETE" />
+        {{ form_widget(delete_form) }}
+        <button type="submit">Delete</button>
+    </form>
+    #}
+
+        
+{% endblock %}

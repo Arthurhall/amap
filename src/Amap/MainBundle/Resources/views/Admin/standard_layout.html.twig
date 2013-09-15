@@ -1,0 +1,19 @@
+{# extension du modèle de base #}
+ 
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+ 
+{# Add CSS #}
+ 
+{% block stylesheets %}
+ 
+    {{ parent() }}
+ 
+    
+    {% stylesheets
+        '@AmapMainBundle/Resources/public/css/sonata_admin.css'
+    %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+ 
+{% endblock %}
+

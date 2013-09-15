@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+{% if value %}
+{% set path = '/' ~ value %}
+
+<img class="thumbnail" src="{{ path | apply_filter('my_thumb') }}" border="0" alt="{{object.alt}}" title="{{object.title}}" />
+{% endif %}
+{% endblock %}

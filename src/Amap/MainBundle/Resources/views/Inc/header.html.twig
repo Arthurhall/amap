@@ -1,0 +1,66 @@
+<div class="container light_header">
+
+	<h1 class="logo">
+		<a href="{{ path('home') }}">
+			<img src="{{ asset('bundles/amapmain/images/logo.png') }}" alt="Amap d'Issy et d'Ailleurs" />
+		</a>
+    </h1>
+    
+    <div class="navbar">  
+        <div class="navbar-inner">  
+            <div class="container">
+	            {{ knp_menu_render('main', {'currentClass': 'active', 'nav_type': 'navbar'}, 'bootstrap') }}
+	            
+	            <form class="form-search navbar-search pull-right" action="{{ path('search') }}" method="post">
+	            	<div class="input-append">
+		                <input type="text" class="search-query span2" placeholder="Mot Clé" name="search">
+		                <button class="btn btn-primary" type="submit">
+		                	<i class="icon-search icon-white"></i>
+		                	Recherche
+		                </button>
+	                </div>
+				</form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="btn-group connexion">
+		
+		{% if app.user is not null and is_granted('IS_AUTHENTICATED_REMEMBERED') or is_granted('IS_AUTHENTICATED_FULLY') %}
+		
+		<button class="btn dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-user"></i>
+            {{app.user.username}}
+            <span class="caret"></span>
+        </button>
+        
+		<ul class="dropdown-menu">
+            <li>
+            <a href="{{ path('sonata_user_profile_show') }}">Mon compte</a>
+            </li>
+            <li>
+            <a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a>
+            </li>
+        </ul>
+        
+        {% else %}
+        
+        <button class="btn dropdown-toggle" data-toggle="dropdown">
+            <i class="icon-user"></i>
+            Connexion
+            <span class="caret"></span>
+        </button>
+        
+        <ul class="dropdown-menu">
+            <li>
+            <a href="{{ path('fos_user_security_login') }}">Se Connecter</a>
+            </li>
+            <li>
+            <a href="{{ path('fos_user_registration_register') }}">S'inscrire</a>
+            </li>
+        </ul>
+        
+		{% endif %}
+    </div>
+    
+</div>

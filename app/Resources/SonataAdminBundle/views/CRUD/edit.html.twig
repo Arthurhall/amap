@@ -1,0 +1,6 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ tinymce_init() }}
+{% endblock %}

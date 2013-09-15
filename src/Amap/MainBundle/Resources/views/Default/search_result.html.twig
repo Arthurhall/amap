@@ -1,0 +1,17 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+{% block title %}
+    {{parent()}}
+    - Résultat(s) de recherche(s)
+{% endblock %}
+
+{% block content %}
+    
+    {% if entities|length > 1 %} {% set pluriel = 's' %}
+    {% else %} {% set pluriel = '' %} {% endif %}
+    
+    <h1>{{entities|length}} Résultat{{pluriel}}</h1>
+    
+    {% include 'AmapBlogBundle:Article:_list.html.twig' %}
+    
+{% endblock %}

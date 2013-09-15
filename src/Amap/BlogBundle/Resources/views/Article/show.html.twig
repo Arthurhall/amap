@@ -1,0 +1,107 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+{% block title %}
+    {{parent()}}
+    - Le Blog : {{entity.title}}
+{% endblock %}
+
+{% block content -%}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ path('home') }}"><i class="icon-home"></i> Home</a> <span class="divider">></span></li>
+        <li><a href="{{ path('blog') }}">Blog</a> <span class="divider">></span></li>
+        <li><a href="{{ path('blog_category', {'slug': entity.category.slug}) }}">{{ entity.category.title }}</a> <span class="divider">></span></li>
+        <li><a href="{{ path('blog_show', {'slug': entity.slug}) }}">{{ entity.title }}</a></li>
+    </ul>
+    
+    <article>
+	    <h1>{{ entity.title }}</h1>
+	    
+	    <hr class="divider" />
+	    
+	    <div>
+	    {{ entity.content|raw }}
+	    </div>
+	    
+	    
+	    {% if entity.image|length > 0 %}
+	    <div class="row-fluid pretty-photo">
+			<ul class="thumbnails">
+				{% for img in entity.image %} 
+	                {% set webPath = '/' ~ img.webPath %}
+					<li class="span3{% if loop.index0 % 4 == 0 %} no-margin-left{% endif %}">
+						<a class="thumbnail"  href="{{ webPath }}" rel="prettyPhoto[galery]" title="{{img.title}}">
+						   <img src="{{ webPath | apply_filter('my_thumb') }}" alt="{{img.alt}}" /><!-- class="img-circle" --> 
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	    {% endif %}
+	    
+	    <hr class="divider" />
+	    
+	    <div class="relative">
+		    <p>
+		    	<i class="icon-calendar"></i> 
+		    	Publié le : 
+		    	<span class="label label-success">{{entity.publishedAt|localizeddate('medium', 'none')}}</span>
+		    </p>
+		    
+		    {% if entity.updatedAt|date('Ymd') > entity.publishedAt|date('Ymd') %}
+		        <p>
+		        	<i class="icon-calendar"></i> 
+		        	Modifié le : 
+		        	<span class="label label-warning">{{entity.updatedAt|localizeddate('medium', 'none')}}</span>
+		        </p>
+		    {% endif %}
+		    
+		    <p>
+		    	<i class="icon-user"></i> 
+		    	Auteur : 
+		    	<span class="label label-success">{{entity.user}}</span>
+		    </p>
+		    
+		    {% include 'AmapBlogBundle:Article:_crud_btn_group.html.twig' %}
+	    </div>
+    
+    </article>
+    
+    <hr class="divider" />
+    
+	{% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': entity.id} %}
+	
+{% endblock %}
+
+
+
+{% block head %}
+    {{ parent() }}
+    
+    {% stylesheets 
+       '@AmapMainBundle/Resources/public/pretty-photo/css/prettyPhoto.css'  
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+
+{% block endPage %}
+    {{ parent() }}
+    
+    {% javascripts 
+        '@AmapMainBundle/Resources/public/pretty-photo/js/jquery.prettyPhoto.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    
+    <script type="text/javascript" charset="utf-8">
+	  $(document).ready(function(){
+	    $("a[rel^='prettyPhoto']").prettyPhoto({
+	    	'theme': 'facebook',
+	    	'social_tools': false 
+	    });
+	  });
+	</script>
+	
+{% endblock %}

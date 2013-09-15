@@ -1,0 +1,57 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+{% block title %}
+    {{parent()}}
+    - Notre Panier du {{entity.deliveredAt|localizeddate('full', 'none')}}
+{% endblock %}
+
+{% block content -%}
+    
+    <ul class="breadcrumb">
+        <li><a href="{{ path('home') }}"><i class="icon-home"></i> Home</a> <span class="divider">></span></li>
+        <li><a href="{{ path('delivery') }}">Nos Paniers</a> <span class="divider">></span></li>
+        <li><a href="{{ path('delivery_show', {'id': entity.id}) }}">Panier Amap du {{entity.deliveredAt|localizeddate('full', 'none')}}</a></li>
+    </ul>
+    
+    {% include 'AmapPanierBundle:Delivery:_message.html.twig' %}
+    
+    {% include 'AmapPanierBundle:Delivery:_panier_maxi.html.twig' %}
+    
+    <hr class="divider" />
+    
+    {% include 'AmapPanierBundle:Delivery:_panier_mini.html.twig' %}
+    
+    
+{% endblock %}
+
+
+{% block head %}
+    {{ parent() }}
+    
+    {% stylesheets 
+       '@AmapMainBundle/Resources/public/pretty-photo/css/prettyPhoto.css'  
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+
+{% block endPage %}
+    {{ parent() }}
+    
+    {% include 'AmapMainBundle:Chart:pie.html.twig' with {'entities': entity.panierMaxi.product} %}
+    
+    {% javascripts 
+        '@AmapMainBundle/Resources/public/pretty-photo/js/jquery.prettyPhoto.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function(){
+        $("a[rel^='prettyPhoto']").prettyPhoto({'theme': 'facebook'});
+      });
+    </script>
+    
+{% endblock %}
+

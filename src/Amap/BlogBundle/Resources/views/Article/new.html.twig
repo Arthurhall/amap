@@ -1,0 +1,63 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+{% block title %}
+    {{parent()}}
+    - Le Blog : Créer
+{% endblock %}
+
+{% form_theme form 'AmapMainBundle:Form:fields.html.twig' %}
+
+{% block content -%}
+    
+    <ul class="breadcrumb">
+        <li><a href="{{ path('home') }}"><i class="icon-home"></i> Home</a> <span class="divider">></span></li>
+        <li><a href="{{ path('blog') }}">Blog</a> <span class="divider">></span></li>
+        <li><a href="{{ path('blog_new') }}">Créer</a></li>
+    </ul>
+    
+    
+    <form class="form form-horizontal" action="{{ path('blog_create') }}" method="post" {{ form_enctype(form) }} id="article_new_form">
+    	<legend>Créer</legend>
+    	
+        {{ form_widget(form) }}
+        
+        <div class="control-group">
+        	<div class="controls">
+                <button type="submit" class="btn btn-success btn-large _submit">
+                	<i class="icon-check icon-white"></i>
+                	Créer 
+                </button>
+            </div>
+        </div>
+        
+    </form>
+    
+    {% include 'AmapMainBundle:Plupload:content.html.twig' %}
+
+    {# include 'AmapBlogBundle:Article:_crud_btn_group.html.twig' with {'options': {'update': false}} #}
+    
+    <hr class="divider" />
+    
+    <button type="submit" class="btn btn-success btn-large pull-right _submit" form="article_new_form">
+	    <i class="icon-check icon-white"></i>
+	    Créer 
+	</button>
+	
+{% endblock %}
+
+
+
+{% block head %}
+    {{ parent() }}
+    
+    {% include 'AmapMainBundle:Plupload:init.html.twig' with {css: true} %}
+{% endblock %}
+
+
+{% block endPage %}
+    {{ parent() }}
+    {{ tinymce_init() }}
+    
+    {% include 'AmapMainBundle:Plupload:init.html.twig' with {js: true, options: {ref: "new"}} %}
+{% endblock %}
+

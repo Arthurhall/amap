@@ -1,0 +1,33 @@
+commande:
+    pattern:  /
+    defaults: { _controller: "AmapPanierBundle:Commande:index" }
+
+commande_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "AmapPanierBundle:Commande:show" }
+
+commande_new:
+    pattern:  /new/{delivery}/{panierAddon}
+    defaults: { _controller: "AmapPanierBundle:Commande:new" }
+    requirements:
+        panierAddon:  \d+
+        delivery:  \d+
+
+commande_create:
+    pattern:  /create/{delivery}/{panierAddon}
+    defaults: { _controller: "AmapPanierBundle:Commande:create" }
+    requirements: { _method: post, panierAddon: \d+, delivery: \d+ }
+
+commande_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "AmapPanierBundle:Commande:edit" }
+
+commande_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "AmapPanierBundle:Commande:update" }
+    requirements: { _method: post|put }
+
+commande_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "AmapPanierBundle:Commande:delete" }
+    requirements: { _method: post|delete }

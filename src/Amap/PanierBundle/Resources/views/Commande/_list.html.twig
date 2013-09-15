@@ -1,0 +1,23 @@
+{% for entity in entities %}
+    <section class="well box clearfix">
+	    <h2>
+	    	<a class="shadow" href="{{path('commande_show', {'id': entity.id})}}">
+	    		{{entity.panierAddon.title}}
+	    		- livraison le {{entity.delivery.deliveredAt | localizeddate('medium', 'none')}}
+	    	</a>
+	    </h2>
+	    <p>Créé le : <span class="label label-success">{{entity.createdAt|localizeddate('medium', 'none')}}</span></p>
+	    
+	    <div class="btn-group pull-right">
+	        <a class="btn" href="{{ path('commande_show', {'id': entity.id}) }}">
+	            <i class="icon-eye-open"></i>
+	            Voir
+	        </a>
+	        <a class="btn" href="{{ path('commande_edit', {'id': entity.id}) }}">
+                <i class="icon-edit"></i>
+                Modifier
+            </a>
+	   </div>
+        
+    </section>
+{% endfor %}

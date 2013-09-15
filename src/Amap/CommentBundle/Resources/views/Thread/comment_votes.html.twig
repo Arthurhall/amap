@@ -1,0 +1,14 @@
+
+<small>
+{% trans from 'FOSCommentBundle' %}fos_comment_comment_vote_score{% endtrans %} 
+</small>
+
+{% if commentScore > 0 %}
+    {% set type = 'success' %}
+{% elseif commentScore == 0 %}
+    {% set type = 'inverse' %}
+{% elseif commentScore < 0 %}
+    {% set type = 'important' %}
+{% endif %}
+
+{{ commentScore|badge(type) }}

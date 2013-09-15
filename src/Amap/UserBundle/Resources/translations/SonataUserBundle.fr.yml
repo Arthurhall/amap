@@ -1,0 +1,125 @@
+link_edit_profile:        Modifier mon profil
+link_edit_authentication: Modifier mon mot de passe
+title_user_edit_authentication: Modifier mon mot de passe
+
+
+title_user_account: User Profile
+
+title_user_edit_profile: Edit
+        
+sonata_user_submit: Submit
+
+breadcrumb:
+    link_user_list: Utilisateurs
+    link_user_create: Ajouter
+    link_user_edit: Éditer
+    link_user_delete: Supprimer
+    link_group_list: Groupes
+    link_group_create: Ajouter
+    link_group_edit: Éditer
+    link_user_show: Voir
+    
+users: Utilisateurs
+groups: Groupes
+            
+switch_user_exit:         Quitter l'identité
+switch_user:              Changer d'identité
+user_block_logout:        Déconnexion
+user_form.label_username: Nom d'utilisateur
+
+label_profile_email :         Email
+label_profile_plain_password: Mot de passe
+label_profile_groups:         Groupes
+label_profile_roles:          Rôles
+label_profile_locked:         Verrouillé
+label_profile_expired:        Expiré
+label_profile_enabled:        Activé
+label_profile_credentials_expired: Droits expirés
+label_profile_created_at:     Créé le 
+label_profile_last_login:     Dernière connexion
+label_profile_website:        Site Web
+label_profile_firstname:      Prénom
+label_profile_lastname:       Nom
+label_profile_username:       Nom d'utilisateur
+label_profile_name:           Nom
+label_profile_biography:      Biographie
+label_profile_gender:         Civilité
+label_profile_locale:         Langue
+label_profile_timezone:       Fuseau horaire
+label_profile_phone:          Téléphone
+label_profile_facebook_uid:   Uid Facebook
+label_profile_facebook_name:  Nom Facebook
+label_profile_dob:  Date de naissance
+
+form:
+    label_email :         Email
+    label_plain_password: Mot de passe
+    label_groups:         Groupes
+    label_roles:          Rôles
+    label_locked:         Verrouillé
+    label_expired:        Expiré
+    label_enabled:        Activé
+    label_credentials_expired: Droits expirés
+    label_created_at:     Créé le 
+    label_last_login:     Dernière connexion
+    label_website:        Site Web
+    label_firstname:      Prénom
+    label_lastname:       Nom
+    label_username:       Nom d'utilisateur
+    label_name:           Nom
+    label_biography:      Biographie
+    label_gender:         Civilité
+    label_locale:         Langue
+    label_timezone:       Fuseau horaire
+    label_phone:          Téléphone
+    label_facebook_uid:   Uid Facebook
+    label_facebook_name:  Nom Facebook
+    
+    
+user_form:
+    label_name: Nom
+    
+filter:
+    label_username:       Nom d'utilisateur
+    label_name:           Nom
+    label_email:          Email
+    label_locked:         Verrouillé
+    label_id:             ID
+    label_groups:         Groupes
+    label_created_at:     Créé le 
+    label_last_login:     Dernière connexion
+    label_firstname:      Prénom
+    label_lastname:       Nom
+    label_username:       Nom d'utilisateur
+    label_name:           Nom
+    label_email:          Adresse email
+    label_groups:         Groupes
+    label_locked:         Verrouillé
+    label_enabled:        Activé
+    label_created_at:     Créé le
+    label_last_login:     Dernière connexion
+    label_impersonating:  Changer d'identité
+    label_roles:          Rôles
+    label_date_of_birth:  Date de naissance
+    
+label_two_step_code:      Validation en deux étapes
+message_two_step_code_help: Rentrer votre code de validation provenant de votre téléphone
+label_two_step_code_error: Le code de validation est invalide
+           
+sonata_user: Utilisateurs
+form_general: Général
+form_groups: Groupes
+form_management: Gestion
+form_profile: Profil
+form_social: Social
+form_security: Sécurité
+            
+field: 
+    label_roles_editable: Rôles
+            
+
+
+gender_unknown: non défini
+gender_female: femme
+gender_male: homme
+

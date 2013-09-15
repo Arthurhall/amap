@@ -1,0 +1,59 @@
+
+{% if delivery is defined and delivery is not empty %}
+<div class="well">
+	<h4>
+		Notre prochain Panier
+		<a class="btn margin-left" href="{{ path('delivery_show', {'id': delivery.id}) }}">
+			<i class="icon-eye-open"></i>
+		</a>
+	</h4>
+	
+    <ul class="nav nav-list">
+    
+	    <li class="nav-header">{{delivery.deliveredAt | localizeddate('medium', 'none') }}</li>
+	    
+	    {% set products = delivery.panierMaxi.product %}
+	    
+	    {% for k, product in products %}
+	        <li>
+	        	<i class="icon-leaf"></i> 
+	        	{{product.title}}
+	        </li>
+	    {% endfor %}
+	</ul>
+	    
+	
+	{% set panierAddon = delivery.panierAddon %}
+	{% set plength = panierAddon|length %}
+	
+    {% if plength > 0 %}
+        <hr class="divider" />
+        
+        <h4 class="text-success">
+        	<i class="icon-star"></i>
+        	Commande{% if plength>1 %}s{% endif %} exceptionnelle{% if plength>1 %}s{% endif %} !
+        </h4>
+        
+        <div class="panier_addon">
+        {% for panier in delivery.panierAddon %}
+            <ul class="nav nav-list">
+            {% for product in panier.product %}
+                <li>
+                	<i class="icon-leaf"></i>
+                    {{product.title}}
+                </li>
+            {% endfor %}
+            </ul>
+            <div class="control-group">
+            <a href="{{ path('commande_new', {'panierAddon': panier.id, 'delivery': delivery.id}) }}" class="btn btn-success">
+            	<i class="icon-shopping-cart"></i>
+            	Je commande
+            </a>
+            </div>
+        {% endfor %}
+        </div>
+   {% endif %}
+	        
+    
+</div>
+{% endif %}

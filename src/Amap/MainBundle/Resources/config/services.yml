@@ -1,0 +1,172 @@
+parameters:
+#    amap_main.example.class: Amap\MainBundle\Example
+    domain: amapissy.fr
+    email: test.ter@arthurhall.fr
+    
+    
+services:
+    
+    pdo:
+        class: PDO
+        arguments:
+            - "mysql:dbname=%database_name%;charset=UTF8"
+            - %database_user%
+            - %database_password%
+            
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+           - { name: twig.extension }
+           
+    twig.extension.debug:
+        class: Twig_Extensions_Extension_Debug
+        tags:
+           - { name: twig.extension }
+           
+    twig.extension.intl:
+       class: Twig_Extensions_Extension_Intl
+       tags:
+           - { name: twig.extension }
+    
+    
+    # KNP Menu :
+    
+    amap_main.menu.builder:
+        class: Amap\MainBundle\Menu\Builder
+        arguments: ["@knp_menu.factory"]
+
+    amap_main.menu.main:
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory_service: amap_main.menu.builder
+        factory_method: createMainMenu
+        arguments: ["@request", "@doctrine.orm.entity_manager", "@security.context"]
+        scope: request # needed as we have the request as a dependency here
+        tags:
+            - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
+    
+    amap_main.menu.sidebar:
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory_service: amap_main.menu.builder
+        factory_method: createSidebarMenu
+        arguments: ["@request", "@doctrine.orm.entity_manager"]
+        scope: request # needed as we have the request as a dependency here
+        tags:
+            - { name: knp_menu.menu, alias: sidebar } # The alias is what is used to retrieve the menu
+            
+    amap_main.menu.sidebar_panier:
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory_service: amap_main.menu.builder
+        factory_method: createSidebarPanierMenu
+        arguments: ["@request", "@doctrine.orm.entity_manager"]
+        scope: request # needed as we have the request as a dependency here
+        tags:
+            - { name: knp_menu.menu, alias: sidebar_panier } # The alias is what is used to retrieve the menu
+    
+    amap_main.menu.sidebar_next_panier:
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory_service: amap_main.menu.builder
+        factory_method: createSidebarNextPanierMenu
+        arguments: ["@request", "@doctrine.orm.entity_manager"]
+        scope: request # needed as we have the request as a dependency here
+        tags:
+            - { name: knp_menu.menu, alias: sidebar_next_panier }
+                    
+    twitter_bootstrap.menu_renderer:
+        class: Amap\MainBundle\Menu\TwitterBootstrapRenderer
+        arguments:
+        - @twig
+        - 'AmapMainBundle:Menu:menu_bootstrap.html.twig'
+        tags:
+        - { name: knp_menu.renderer, alias: bootstrap }
+    
+    # Permanence :
+    permanence.dates:
+        class: Amap\MainBundle\Services\PermanenceDates
+        arguments: []
+    
+    # ADMIN :
+      
+    admin.commande:
+        class: Amap\MainBundle\Admin\CommandeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: %sonata.user.admin.groupname%, label: Commandes de paniers exceptionnels }
+        arguments: [ null, Amap\MainBundle\Entity\Commande, SonataAdminBundle:CRUD ]
+        
+    admin.permanence:
+        class: Amap\MainBundle\Admin\PermanenceAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: %sonata.user.admin.groupname%, label: Permanences }
+        arguments: [ null, Amap\MainBundle\Entity\Permanence, SonataAdminBundle:CRUD ]
+        
+        
+    admin.article:
+        class: Amap\MainBundle\Admin\ArticleAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Blog, label: Article }
+        arguments: [ null, Amap\MainBundle\Entity\Article, SonataAdminBundle:CRUD ]
+        calls:
+            - [ setSecurityContext, [ @security.context ] ]
+            - [ setEntityManager, [ @doctrine.orm.entity_manager ] ]
+        
+        
+    admin.category:
+        class: Amap\MainBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Blog, label: Catégories }
+        arguments: [ null, Amap\MainBundle\Entity\Category, SonataAdminBundle:CRUD ]
+        
+    admin.delivery:
+        class: Amap\MainBundle\Admin\DeliveryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paniers, label: Livraison }
+        arguments: [ null, Amap\MainBundle\Entity\Delivery, SonataAdminBundle:CRUD ]
+        calls:
+            - [ setMailer, [ @mailer ] ]
+            - [ setEntityManager, [ @doctrine.orm.entity_manager ] ]
+            - [ setTemplating, [ @templating ] ]
+        
+    admin.panier_maxi:
+        class: Amap\MainBundle\Admin\PanierMaxiAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paniers, label: Grand Panier }
+        arguments: [ null, Amap\MainBundle\Entity\PanierMaxi, SonataAdminBundle:CRUD ]
+        
+    admin.panier_mini:
+        class: Amap\MainBundle\Admin\PanierMiniAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paniers, label: Petit Panier }
+        arguments: [ null, Amap\MainBundle\Entity\PanierMini, SonataAdminBundle:CRUD ]
+        
+    admin.panier_addon:
+        class: Amap\MainBundle\Admin\PanierAddonAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paniers, label: Panier Exceptionnel }
+        arguments: [ null, Amap\MainBundle\Entity\PanierAddon, SonataAdminBundle:CRUD ]
+        
+    admin.product:
+        class: Amap\MainBundle\Admin\ProductAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paniers, label: Produit }
+        arguments: [ null, Amap\MainBundle\Entity\Product, SonataAdminBundle:CRUD ]
+        calls:
+            - [ setEntityManager, [ @doctrine.orm.entity_manager ] ]
+        
+    admin.product_vegetable:
+        class: Amap\MainBundle\Admin\ProductVegetableAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paniers, label: Nature du produit }
+        arguments: [ null, Amap\MainBundle\Entity\ProductVegetable, SonataAdminBundle:CRUD ]
+            
+    admin.quantity_type:
+        class: Amap\MainBundle\Admin\QuantityTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paniers, label: Types de quantité }
+        arguments: [ null, Amap\MainBundle\Entity\QuantityType, SonataAdminBundle:CRUD ]
+        
+    admin.image:
+        class: Amap\MainBundle\Admin\ImageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Général, label: Images }
+        arguments: [ null, Amap\MainBundle\Entity\Image, SonataAdminBundle:CRUD ]
+
+

@@ -1,0 +1,16 @@
+{% for entity in entities %}
+    <section class="well box">
+    	
+    	<ul class="breadcrumb">
+	        <li><a href="{{ path('blog') }}"><i class="icon-book"></i> Le Blog</a> <span class="divider">></span></li>
+	        <li><a href="{{ path('blog_show', {'slug': entity.slug}) }}">Origine : {{entity.title}}</a></li>
+        </ul>
+        
+	    <p>
+	    	{{ entity.body }}
+	    </p>
+	    
+	    <p>Commenté le : <span class="label label-success">{{ entity.createdAt|localizeddate('medium', 'none') }}</span></p>
+	    
+    </section>
+{% endfor %}

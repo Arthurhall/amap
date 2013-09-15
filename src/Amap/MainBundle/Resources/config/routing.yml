@@ -1,0 +1,25 @@
+home:
+    pattern:  /
+    defaults: { _controller: AmapMainBundle:Default:index }
+
+contact:
+    pattern:  /contact
+    defaults: { _controller: AmapMainBundle:Default:contact }
+    
+search:
+    pattern:  /search
+    defaults: { _controller: AmapMainBundle:Default:search }
+    requirements: { _method: post }
+    
+plupload:
+    pattern:  /plupload
+    defaults: { _controller: AmapMainBundle:Default:plupload }
+    
+permanence_create:
+    pattern:  /create-permanence
+    defaults: { _controller: "AmapMainBundle:Default:createPermanence" }
+    requirements: { _method: post }
+    
+nos_produits:
+    pattern:  /nos-produits
+    defaults: { _controller: AmapMainBundle:Default:nosProduits }

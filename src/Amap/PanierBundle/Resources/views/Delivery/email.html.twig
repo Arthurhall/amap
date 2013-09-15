@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        
+        {% include 'AmapMainBundle:Inc:bootstrap_email.css.twig' %}
+        
+    </head>
+    
+    <body>
+        
+        <h1>
+        {{delivery}}
+        </h1>
+        
+        {% include 'AmapPanierBundle:Delivery:_message.html.twig' with {'entity': delivery, 'email': true} %}
+        
+        {% include 'AmapPanierBundle:Delivery:_panier_maxi.html.twig' with {'entity': delivery, 'email': true} %}
+        
+	    <hr class="divider" />
+	    
+	    {% include 'AmapPanierBundle:Delivery:_panier_mini.html.twig' with {'entity': delivery, 'email': true} %}
+
+    </body>
+</html>

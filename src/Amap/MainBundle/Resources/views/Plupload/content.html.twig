@@ -1,0 +1,73 @@
+    
+    <div id="wrapp_plupload">
+        <h3>Illustrations :</h3>
+        <div id="plupload">
+            <div id="drop_area">
+                <p>Glisser vos images ici <br /> <span class="small">ou</span></p>
+                <a href="#" class="btn" id="browse">Parcourir</a>
+            </div>
+            
+            <div id="file_list">
+            	{% if entity is defined %}
+                {% for img in entity.image %}
+                <div class="file clearfix">
+                    
+                    {% set webPath = '/' ~ img.webPath %}
+                    <img class="thumbnail pull-left" src="{{ webPath | apply_filter('my_thumb') }}" alt="{{img.alt}}" title="{{img.title}}" />
+                    
+                    <form action="{{ path('image_update') }}" method="post" id="form_{{img.id}}">
+                        
+                        <label>Titre :</label>
+                        <input class="input_title" type="text" name="title[{{img.id}}]" value="{{img.title}}" />
+                        <br>
+                        <label>Alternatif :</label>
+                        <input class="input_alt" type="text" name="alt[{{img.id}}]" value="{{img.alt}}" />
+                        <br />
+                        
+                        <button 
+                            class="btn vitrine {% if img.vitrine %}btn-info{% endif %}" 
+                            type="button" 
+                            value="{% if img.vitrine %}1{% else %}0{% endif %}"
+                            name="vitrine[{{img.id}}]"
+                            form="form_{{img.id}}"
+                        >
+                            <i class="icon-eye-open"></i>
+                            Vitrine
+                        </button>
+                        
+                        <a class="btn btn-success pull-right update" href="#">
+                            <i class="icon-edit"></i>
+                            Envoyer
+                        </a>
+                        
+                        <input type="hidden" name="vitrine[{{img.id}}]" value="{% if img.vitrine %}1{% else %}0{% endif %}" class="input-vitrine" />
+                        <input type="hidden" name="article_id" value="{{entity.id}}" />
+                        <input type="hidden" name="user" value="{{user.id}}" />
+                        <input type="hidden" name="id" value="{{img.id}}" />
+                        <input type="hidden" name="url_delete" class="url_delete" value="{{ path('image_delete') }}" />
+                    </form>
+                    
+                    <div class="btn-group pull-right">
+                        
+                        <button class="btn btn-danger delete" type="submit">
+                            <i class="icon-remove-sign"></i>
+                            Supprimer
+                        </button>
+                        
+                    </div>
+                    
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <!--
+            <a href="#" id="upload" class="btn btn-success _submit">
+                <i class="icon-check icon-white"></i>
+                Créer
+            </a>
+            -->
+        </div>
+    </div>
+    
+

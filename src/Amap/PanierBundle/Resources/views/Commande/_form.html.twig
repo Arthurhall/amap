@@ -1,0 +1,83 @@
+    
+    <table class="table table-striped table-hover table-bordered">
+        <tbody>
+        	
+        	{% set detail = form.productDetail.vars.value %}
+        	
+            {% for item in form.product %}
+            <tr>
+                <td>
+                    <label class="control-label" for="{{ item.vars.id }}">
+                        {% set labels = item.vars.label | split('-') %}
+                        {{ labels.0 }} 
+                        {{ labels.1 | badge('success') }}
+                        {{ labels.2 | badge('important') }}
+                    </label>
+                </td>
+                <td>
+                    <div class="controls pull-right">
+                        <div class="input-append input-prepend">
+                        	
+                            <span class="add-on" title="Quantité">
+                                <i class="icon-minus-sign"></i>
+                            </span>
+                            
+                            {% for product in panier_addon.product if product.id == item.vars.value %}
+                                <input type="hidden" class="price" id="price_{{product.id}}" name="price[{{item.vars.value}}]" value="{{product.price}}" />
+                            {% endfor %}
+                            
+                            <input type="hidden" name="{{ item.vars.full_name }}" value="{{item.vars.value}}" />
+                            
+                            {% if item.vars.value in detail|keys %}
+                                {% set val = detail[ item.vars.value ] %}
+                            {% else %}
+                                {% set val = 0 %}
+                            {% endif %}
+                            <input type="number" class="quantity" name="quantity[{{item.vars.value}}]" id="{{ item.vars.id }}" value="{{val}}" />
+                            
+                            <span class="add-on" title="Quantité">
+                                <i class="icon-plus-sign"></i>
+                            </span>
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            
+            
+            {% if entity is defined and entity.price >0 %}
+               {% set val = entity.price %}
+            {% else %}
+               {% set val = 0 %}
+            {% endif %}
+            
+            <tfoot>
+                <tr {% if val == 0 %}class="hide"{% endif %} id="tr_total">
+                    <td colspan="2" class="aright">
+                    	
+                        Total : <strong id="total">{{val}}</strong> €
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    	<input type="hidden" name="{{ form.productDetail.vars.full_name }}" value="{{ detail | json_encode() }}" />
+                    	
+                        {{ form_widget(form._token) }}
+    
+                        <div class="controls pull-right">
+                            <button type="submit" class="btn btn-success">
+                                <i class="icon-check"></i>
+                                {% if entity is defined and entity.id > 0 %}
+                                    Modifier ma commande
+                                {% else %}
+                                    Commander
+                                {% endif %}
+                            </button>
+                        </div>
+    
+                    </td>
+                </tr>
+            </tfoot>
+        </tbody>
+    </table>

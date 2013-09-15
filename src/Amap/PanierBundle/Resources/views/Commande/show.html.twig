@@ -1,0 +1,78 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+{% block title %}
+    {{parent()}}
+    - Ma Commande {{entity.id}}
+{% endblock %}
+
+{% form_theme delete_form 'AmapMainBundle:Form:fields.html.twig' %}
+
+{% block content -%}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ path('home') }}"><i class="icon-home"></i> Home</a> <span class="divider">></span></li>
+        <li><a href="{{ path('sonata_user_profile_show') }}">Mon Compte</a> <span class="divider">></span></li>
+        <li>
+        	<a href="{{ path('commande_show', {'id': entity.id}) }}">
+        	   {{entity}}
+        	</a>
+        </li>
+    </ul>
+
+    <table class="table table-striped table-hover table-bordered">
+    	<thead>
+    		<tr>
+    			<th>
+    				Produit
+    			</th>
+    			<th>
+    				Quantité
+    			</th>
+    		</tr>
+    	</thead>
+            <tbody>
+                {% for product in entity.product %}
+                <tr>
+                    <td>
+                        {{ product.productVegetable }}
+                        
+                        {% set q = product.quantity ~ ' ' ~ product.quantityType %} 
+                        {{ q | badge('success') }}
+                        
+                        {% set price = product.priceFormat ~ '' ~ product.devise %} 
+                        {{ price | badge('important') }}
+                    </td>
+                    <td>
+                    	{{ entity.productDetail[ product.id ] }}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="aright">
+                            Total : <strong id="total">{{ entity.priceFormat }}</strong> €
+                        </td>
+                    </tr>
+                </tfoot>
+            </tbody>
+        </table>
+
+        <form class="form_delete" action="{{ path('commande_delete', { 'id': entity.id }) }}" method="post">
+        	<input type="hidden" name="_method" value="DELETE" />
+        	{{ form_widget(delete_form) }}
+        	
+            <div class="btn-group pull-right">
+	            
+	            <a class="btn" href="{{ path('commande_edit', {'id': entity.id}) }}">
+	                <i class="icon-edit"></i>
+	                Modifier
+	            </a>
+	            
+	            <button type="submit" class="btn btn-danger">
+	            	<i class="icon-remove-sign"></i>
+	            	Supprimer
+	            </button>
+            </div>
+       </form>
+
+{% endblock %}

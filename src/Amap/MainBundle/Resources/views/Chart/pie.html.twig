@@ -1,0 +1,39 @@
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      
+        
+        var array_panier_maxi = [
+        
+	        ['Produit', 'Poids en gramme'],
+	        
+	        {{ charts.panier_maxi.str|raw }}
+	        
+        ];
+        
+        var array_panier_mini = [
+        
+            ['Produit', 'Poids en gramme'],
+            
+            {{ charts.panier_mini.str|raw }}
+            
+        ];
+        
+        function drawChart() {
+        var data_panier_maxi = google.visualization.arrayToDataTable( array_panier_maxi );
+        var data_panier_mini = google.visualization.arrayToDataTable( array_panier_mini );
+
+        var options = {
+          title: 'Répartition des produits en grammes',
+          chartArea: {left: 20, width:"100%"}
+        };
+
+        var chart_panier_maxi = new google.visualization.PieChart(document.getElementById('chart_div_panier_maxi'));
+        chart_panier_maxi.draw(data_panier_maxi, options);
+        
+        var chart_panier_mini = new google.visualization.PieChart(document.getElementById('chart_div_panier_mini'));
+        chart_panier_mini.draw(data_panier_mini, options);
+      }
+    </script>

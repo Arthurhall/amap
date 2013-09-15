@@ -1,0 +1,20 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field %}
+
+<ul>
+{% for prod in object.product %}
+    {% for id, q in object.productDetail %}
+        {% if id == prod.id %}
+            <li>
+            	{% set qstr = 'x ' ~ q %}
+                {{ prod }} {{ qstr | label('important') }}
+                {% set prix = prod.price * q | number_format(2, ',', ' ') ~ '€' %}
+                soit {{ prix | label('important') }}
+            </li>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+</ul>
+
+{% endblock %}

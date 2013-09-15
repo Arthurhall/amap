@@ -1,0 +1,322 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies: ~
+    session:         ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [ AmapMainBundle, AmapBlogBundle, AmapPanierBundle, FOSCommentBundle ]
+    assets:
+        img_bootstrap_glyphicons_black:
+            inputs:
+                -  "%kernel.root_dir%/../vendor/twitter/bootstrap/img/glyphicons-halflings.png"
+            output: "img/glyphicons-halflings.png"
+
+        img_bootstrap_glyphicons_white:
+            inputs:
+                -  "%kernel.root_dir%/../vendor/twitter/bootstrap/img/glyphicons-halflings-white.png"
+            output: "img/glyphicons-halflings-white.png"
+                
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
+        #yui_css:
+        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+        lessphp:
+            apply_to: "\.less$"
+            # Formatter options: compressed, lessjs, classic
+            formatter: "compressed"
+            preserve_comments: false
+            presets:
+                my_variable: "#000"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+        # e.g. database_path: %kernel.root_dir%/data/data.db3
+        # path:     %database_path%
+        types:
+            json: Sonata\Doctrine\Types\JsonType
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        entity_managers:
+            default:
+                auto_mapping: true
+                mappings:
+                    FOSUserBundle: ~
+                    SonataUserBundle: ~
+                    AmapUserBundle: ~
+                    AmapMainBundle: ~
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:     { type: memory }
+
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: Amap\UserBundle\Entity\User
+    group:
+        group_class: Amap\UserBundle\Entity\Group
+    service:
+        mailer: fos_user.mailer.twig_swift
+    from_email:
+        address:        noreply@arthurhall.fr
+        sender_name:    Amap
+    registration:
+        form:
+            type:               amap_user_registration
+            handler:            fos_user.registration.form.handler.default
+            validation_groups:  [Registration, Default]  
+        confirmation:
+            enabled:            true 
+            #template:           FOSUserBundle:Registration:email.txt.twig
+            #from_email: # Use this node only if you don't want the global email address for the confirmation email
+                #address:        noreply@amapissy.fr
+                #sender_name:    Amap
+
+fos_comment:
+    db_driver: orm
+    class:
+        model:
+            comment:  Amap\CommentBundle\Entity\Comment
+            thread:   Amap\CommentBundle\Entity\Thread
+            vote:     Amap\CommentBundle\Entity\Vote
+    
+sonata_admin:
+    security:
+        handler: sonata.admin.security.handler.noop
+    title:      Amap
+    templates:
+        ## default global templates
+        #layout:  SonataAdminBundle::standard_layout.html.twig
+        layout:  AmapMainBundle:Admin:standard_layout.html.twig
+        ajax:    SonataAdminBundle::ajax_layout.html.twig
+ 
+        ## default actions templates, should extend a global templates
+        list:    SonataAdminBundle:CRUD:list.html.twig
+        show:    SonataAdminBundle:CRUD:show.html.twig
+        edit:    SonataAdminBundle:CRUD:edit.html.twig
+        history: SonataAdminBundle:CRUD:history.html.twig
+        preview: SonataAdminBundle:CRUD:preview.html.twig
+        delete:  SonataAdminBundle:CRUD:delete.html.twig
+ 
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.block.service.text:
+        sonata.block.service.action:
+        sonata.block.service.rss:
+
+sonata_doctrine_orm_admin:
+    entity_manager: ~
+    templates:
+        form:
+            - SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig
+        filter:
+            - SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig
+        types:
+            list:
+                image:      SonataAdminBundle:CRUD:list_image.html.twig
+                array:      SonataAdminBundle:CRUD:list_array.html.twig
+                boolean:    SonataAdminBundle:CRUD:list_boolean.html.twig
+                date:       SonataAdminBundle:CRUD:list_date.html.twig
+                time:       SonataAdminBundle:CRUD:list_time.html.twig
+                datetime:   SonataAdminBundle:CRUD:list_datetime.html.twig
+                text:       SonataAdminBundle:CRUD:base_list_field.html.twig
+                trans:      SonataAdminBundle:CRUD:list_trans.html.twig
+                string:     SonataAdminBundle:CRUD:base_list_field.html.twig
+                smallint:   SonataAdminBundle:CRUD:base_list_field.html.twig
+                bigint:     SonataAdminBundle:CRUD:base_list_field.html.twig
+                integer:    SonataAdminBundle:CRUD:base_list_field.html.twig
+                decimal:    SonataAdminBundle:CRUD:base_list_field.html.twig
+                identifier: SonataAdminBundle:CRUD:base_list_field.html.twig
+
+            show:
+                product_detail: SonataAdminBundle:CRUD:product_detail.html.twig
+                text_raw:   SonataAdminBundle:CRUD:text_raw.html.twig
+                image:      SonataAdminBundle:CRUD:show_image.html.twig
+                array:      SonataAdminBundle:CRUD:show_array.html.twig
+                boolean:    SonataAdminBundle:CRUD:show_boolean.html.twig
+                date:       SonataAdminBundle:CRUD:show_date.html.twig
+                time:       SonataAdminBundle:CRUD:show_time.html.twig
+                datetime:   SonataAdminBundle:CRUD:show_datetime.html.twig
+                text:       SonataAdminBundle:CRUD:base_show_field.html.twig
+                trans:      SonataAdminBundle:CRUD:show_trans.html.twig
+                string:     SonataAdminBundle:CRUD:base_show_field.html.twig
+                smallint:   SonataAdminBundle:CRUD:base_show_field.html.twig
+                bigint:     SonataAdminBundle:CRUD:base_show_field.html.twig
+                integer:    SonataAdminBundle:CRUD:base_show_field.html.twig
+                decimal:    SonataAdminBundle:CRUD:base_show_field.html.twig
+
+sonata_user:
+    impersonating_route:    sonata_user_impersonating
+    table:
+        user_group: "fos_user_user_group"
+    security_acl:     false
+    class:
+        user:         Amap\UserBundle\Entity\User
+        group:        Amap\UserBundle\Entity\Group
+    admin:                  # Admin Classes
+        user:
+            class:          Amap\UserBundle\Admin\Entity\UserAdmin
+            controller:     SonataAdminBundle:CRUD
+            translation:    SonataUserBundle
+ 
+        group:
+            class:          Amap\UserBundle\Admin\Entity\GroupAdmin
+            controller:     SonataAdminBundle:CRUD
+            translation:    SonataUserBundle
+    profile:  # Profile Form (firstname, lastname, etc ...)
+        form:
+            type:               sonata_user_profile
+            handler:            sonata.user.profile.form.handler.default
+            name:               sonata_user_profile_form
+            validation_groups:  [Profile]
+    
+ewz_recaptcha:
+    enabled: true
+    public_key:   6LceieYSAAAAAPkLjOpqtLkvk9972nXBPv7XsojP 
+    private_key:  6LceieYSAAAAACjjtmXWjoLdG81SPRzHlUocs8gM
+    secure:       false
+    locale_key:   kernel.default_locale
+    
+bc_bootstrap:
+    less_filter: lessphp
+    assets_dir: %kernel.root_dir%/../vendor/twitter/bootstrap
+    jquery_path: %kernel.root_dir%/../src/Amap/MainBundle/Resources/public/js/jquery-1.9.1.min.js #%kernel.root_dir%/../vendor/jquery/jquery/jquery-1.9.1.js
+    
+
+stfalcon_tinymce:
+    include_jquery: false
+    tinymce_jquery: false
+    textarea_class: "tinymce"
+    language: %locale%
+    theme: 
+        advanced:
+            plugins:
+                - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
+                - "searchreplace wordcount visualblocks visualchars code fullscreen"
+                - "insertdatetime media nonbreaking save table contextmenu directionality"
+                - "emoticons template paste textcolor"
+            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent"
+            toolbar2: "print preview media | forecolor backcolor emoticons | stfalcon | example | link image"
+            image_advtab: true
+            templates:
+                - {title: 'Test template 1', content: 'Test 1'}
+                - {title: 'Test template 2', content: 'Test 2'}
+        # simple:
+            # mode: "textareas"
+            # theme: "advanced"
+            # theme_advanced_buttons1: "mylistbox,mysplitbutton,bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink"
+            # theme_advanced_buttons2: ""
+            # theme_advanced_buttons3: ""
+            # theme_advanced_toolbar_location: "top"
+            # theme_advanced_toolbar_align: "left"
+            # theme_advanced_statusbar_location: "bottom"
+            # plugins: "fullscreen"
+            # theme_advanced_buttons1_add: "fullscreen"
+            # width: '100%'
+        # # Advanced theme with almost all enabled plugins
+        # advanced:
+            # theme: "advanced"
+            # plugins: "pagebreak,style,layer,table,save,advhr,advimage,advlink,emoticons,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template"
+            # theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect" # ,styleselect
+            # theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,|,forecolor,backcolor"
+            # theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emoticons,iespell,media,advhr,|,print"
+            # theme_advanced_buttons4: "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,|,insertdate,inserttime,preview,|,ltr,rtl,|,fullscreen,code,help"
+            # theme_advanced_toolbar_location: "top"
+            # theme_advanced_toolbar_align: "left"
+            # theme_advanced_statusbar_location: "bottom"
+            # theme_advanced_resizing: true
+            # width: '100%'
+        # # Medium number of enabled plugins + spellchecker
+        # medium:
+            # mode: "textareas"
+            # theme: "advanced"
+            # plugins: "table,advhr,advlink,paste,xhtmlxtras,spellchecker"
+            # theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,hr,removeformat,|,sub,sup,|,spellchecker"
+            # theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,cleanup,code"
+            # theme_advanced_buttons3: "tablecontrols"
+            # theme_advanced_toolbar_location: "top"
+            # theme_advanced_toolbar_align: "left"
+            # theme_advanced_statusbar_location: ""
+            # paste_auto_cleanup_on_paste: true
+            # spellchecker_languages: "+English=en,Dutch=nl"
+            # theme_advanced_resizing: true
+            # width: '100%'
+            
+stof_doctrine_extensions:
+    default_locale: %locale%
+    orm:
+        default:
+            sluggable: true
+            timestampable: true
+            
+avalanche_imagine:
+    filters:
+        small_thumb:
+            type:    thumbnail
+            options: { size: [90, 65], mode: outbound, quality: 100, format: png }
+        my_thumb:
+            type:    thumbnail
+            options: { size: [160, 120], mode: outbound, quality: 100, format: png }
+        blog_thumb:
+            type:    thumbnail
+            options: { size: [140, 100], mode: outbound, quality: 100, format: png }
+        home_thumb:
+            type:    thumbnail
+            options: { size: [760, 330], mode: outbound, quality: 100, format: png }
+        maxsize_thumb:
+            type:    thumbnail
+            options: { size: [1000, 1000], mode: outbound, quality: 100, format: png }
+        galery_thumb:
+            type:    thumbnail
+            options: { size: [120, 90], mode: outbound, quality: 100, format: png }
+        circle_thumb:
+            type:    thumbnail
+            options: { size: [110, 110], mode: outbound, quality: 100, format: png }
+            

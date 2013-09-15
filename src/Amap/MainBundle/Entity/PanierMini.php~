@@ -1,0 +1,82 @@
+<?php
+
+namespace Amap\MainBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * PanierMini
+ *
+ * @ORM\Table(name="panier_mini")
+ * @ORM\Entity
+ */
+class PanierMini
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="message", type="text", nullable=true)
+     */
+    private $message;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="price", type="float", nullable=true)
+     */
+    private $price;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="discounted_price", type="float", nullable=true)
+     */
+    private $discountedPrice;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="panierMini")
+     * @ORM\JoinTable(name="panier_mini_has_product",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="panier_mini_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $product;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->product = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+}

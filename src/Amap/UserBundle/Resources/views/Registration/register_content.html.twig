@@ -1,0 +1,15 @@
+<form class="fos_user_registration_register form-horizontal pull-left" action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST">
+    
+    <legend>Inscription</legend>
+    
+    {% form_theme form 'AmapMainBundle:Form:fields.html.twig' %}
+    
+    {{ form_widget(form) }}
+    
+    <div class="control-group">
+	    <div class="fos_user_registration_submit controls">
+	        <input class="btn btn-success" type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
+	    </div>
+    </div>
+    
+</form>

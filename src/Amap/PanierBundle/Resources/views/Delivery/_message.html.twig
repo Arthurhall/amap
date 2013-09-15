@@ -1,0 +1,30 @@
+{% if email is not defined %}
+    {% set email = false %}
+{% endif %}
+
+{% if entity.message or entity.image|length > 0 %}
+        
+    {% if entity.message %}
+        {{entity.message | raw}}
+    {% endif %}
+    
+    {% if entity.image|length > 0 %}
+        <div class="row-fluid pretty-photo">
+            <ul class="thumbnails">
+                {% for img in entity.image %} 
+                    {% set webPath = '/' ~ img.webPath %}
+                    <li class="span3{% if loop.index0 % 4 == 0 %} no-margin-left{% endif %}">
+                        <a class="thumbnail"  href="{{ webPath }}" rel="prettyPhoto[galery]" title="{{img.title}}">
+                           <img src="{{ webPath | apply_filter('my_thumb') }}" alt="{{img.alt}}" /><!-- class="img-circle" --> 
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    {% if entity.message and entity.image|length == 0 %}
+        <hr class="divider" />
+    {% endif %}
+    
+{% endif %}

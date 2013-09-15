@@ -1,0 +1,12 @@
+
+{{ render(controller('AmapMainBundle:Default:nextPanier')) }}
+
+<div class="well">
+	<h4>Le Blog</h4>
+    {{ knp_menu_render('sidebar', {'currentClass': 'active', 'nav_type': 'list'}) }}
+</div>
+
+<div class="well">
+	<h4>Nos Paniers</h4>
+    {{ knp_menu_render('sidebar_panier', {'currentClass': 'active', 'nav_type': 'list'}) }}
+</div>

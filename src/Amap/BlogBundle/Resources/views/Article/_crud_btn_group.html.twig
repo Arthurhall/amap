@@ -1,0 +1,61 @@
+
+{% if options is not defined %}
+    {% set options = {} %}
+{% endif %}
+
+{% set defaults = {'create': true, 'read': true, 'update': true, 'delete': true, 'list': true, 'pull': null} %}
+{% set options = defaults|merge(options) %}
+
+
+{% if not is_granted('ROLE_MEMBER') %}
+	{% set restrict = {'create': false, 'update': false, 'delete': false} %}
+	{% set options = options|merge(restrict) %}
+{% endif %}
+
+{% if app.user is not null and not app.user.hasArticle( entity.id ) %}
+    {% set restrict = {'create': false, 'update': false, 'delete': false} %}
+    {% set options = options|merge(restrict) %}
+{% endif %}
+
+
+<div class="wrapp-crud-btn">
+	{% if delete_form is defined and options.delete %}
+	<form action="{{ path('blog_delete', { 'id': entity.id }) }}" method="post" class="form-crud-btn form_delete">
+	{% endif %}
+	    
+	    <div class="btn-group{% if options.pull == 'right' or options.pull == 'left' %} pull-{{ options.pull }}{% endif %}">
+	    	{% if options.list %}
+	        <a class="btn" href="{{ path('blog') }}">
+	            <i class="icon-list"></i>
+	            Retour à la liste
+	        </a>
+	        {% endif %}
+	        
+	        {% if options.update %}
+	        <a class="btn" href="{{ path('blog_edit', { 'slug': entity.slug }) }}">
+	            <i class="icon-edit"></i>
+	            Modifier
+	        </a>
+	        {% endif %}
+	        
+	        {% if options.create %}
+	        <a class="btn" href="{{ path('blog_new') }}">
+	            <i class="icon-plus-sign"></i>
+	            Ajouter
+	        </a>
+	        {% endif %}
+	        
+	        {% if delete_form is defined and options.delete %}
+	        <button type="submit" class="btn">
+	             <i class="icon-remove-sign"></i>
+	             Supprimer
+	        </button>
+	        {% endif %}
+	    </div>
+	    
+	{% if delete_form is defined and options.delete %}
+	    {{ form_widget(delete_form) }}
+	    <input type="hidden" name="_method" value="DELETE" />
+	</form>
+	{% endif %}
+</div>

@@ -1,0 +1,25 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+{% block title %}
+    {{parent()}}
+    - Commande : Créer
+{% endblock %}
+
+{% form_theme form 'AmapMainBundle:Form:fields.html.twig' %}
+
+
+{% block content -%}
+
+    <ul class="breadcrumb">
+        <li><a href="{{ path('home') }}"><i class="icon-home"></i> Home</a> <span class="divider">></span></li>
+        <li><a href="{{ path('sonata_user_profile_show') }}">Mon Compte</a> <span class="divider">></span></li>
+        <li><a href="{{ path('commande_new', {'panierAddon': panier_addon.id, 'delivery': delivery.id}) }}">Je commande !</a></li>
+    </ul>
+    
+    <form class="form form-inline" action="{{ path('commande_create', {'panierAddon': panier_addon.id, 'delivery': delivery.id}) }}" method="post" {{ form_enctype(form) }}>
+    	
+    	{% include 'AmapPanierBundle:Commande:_form.html.twig' %}
+    	
+    </form>
+    
+{% endblock %}

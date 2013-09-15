@@ -1,0 +1,24 @@
+{% for entity in entities %}
+    <section class="well box clearfix">
+    	
+    	{% for img in entity.image %}
+            {% if img and loop.first %}
+                {% set webPath = '/' ~ img.webPath %}
+                <a class="thumbnail pull-left" href="{{path('delivery_show', {'id': entity.id})}}">
+                    <img src="{{ webPath | apply_filter('blog_thumb') }}" alt="{{img.alt}}" /><!-- class="img-circle" -->
+                </a>
+            {% endif %}
+        {% endfor %}
+        
+	    <h2>
+	    	<a class="shadow" href="{{path('delivery_show', {'id': entity.id})}}">{{entity.deliveredAt|localizeddate('medium', 'none')}}</a>
+	    </h2>
+	    
+	    <p>
+	    	{% for product in entity.panierMaxi.product %}
+	    	<span class="label label-success">{{ product.productVegetable}}</span> {# {% if not loop.last %}, {% endif %} #}
+            {% endfor %}
+	    </p>
+	    
+    </section>
+{% endfor %}

@@ -1,0 +1,13 @@
+image_update:
+    pattern:  /update
+    defaults: { _controller: "AmapBlogBundle:Image:update" }
+    requirements:
+        #id: \d+
+        _method: post
+        
+image_delete:
+    pattern:  /delete
+    defaults: { _controller: "AmapBlogBundle:Image:delete" }
+    requirements:
+        #id: \d+
+        _method: post

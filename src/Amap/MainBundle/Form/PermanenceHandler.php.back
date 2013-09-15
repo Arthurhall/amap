@@ -1,0 +1,88 @@
+<?php
+
+namespace Amap\MainBundle\Form;
+
+use FOS\UserBundle\Model\UserInterface;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+use Amap\MainBundle\Entity\Permanence;
+use Amap\MainBundle\Form\PermanenceType;
+
+
+class PermanenceHandler
+{
+    protected $request;
+    protected $form;
+
+    public function __construct(FormInterface $form, Request $request, EntityManager $em)
+    {
+        $this->form = $form;
+        $this->request = $request;
+		$this->em = $em;
+   	}
+	
+	public function process(UserInterface $user)
+    {
+		
+		$entity  = new Permanence();
+		
+        $form = $this->createForm(new PermanenceType(), $entity);
+        $form->bind($request);
+		
+		$post = $request->request->get('amap_mainbundle_permanencetype');
+		//print_r($post); die();
+		if(!isset($post['heure']) || !$post['heure']) {
+			$form->addError( new FormError('Vous devez choisir une heure.') );
+		}
+		// $date = $post['date']['year'].'-'.trim(sprintf("%02d\n", $post['date']['month'])).'-'.trim(sprintf("%02d\n", $post['date']['day']));
+		// $date = new \DateTime( $date );
+		
+        if ($form->isValid()) 
+        {
+        	$userDetail = array();
+        	foreach ($post['heure'] as $key => $heure) 
+        	{
+				$userDetail[ $user->getId() ] = $heure;
+			}
+        	$entity->setUserDetail( $userDetail );
+			$entity->addUser( $user );
+			//$entity->setDeliveryDate( $date );
+			
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('sonata_user_profile_show'));
+        }
+
+        return $this->redirect($this->generateUrl('sonata_user_profile_show'));
+    }
+
+    public function process(UserInterface $user)
+    {
+        $this->form->setData($user);
+
+        if ('POST' === $this->request->getMethod()) {
+            $this->form->bind($this->request);
+
+            if ($this->form->isValid()) {
+                $this->onSuccess($user);
+
+                return true;
+            }
+
+            // Reloads the user to reset its username. This is needed when the
+            // username or password have been changed to avoid issues with the
+            // security layer.
+            $this->userManager->reloadUser($user);
+        }
+
+        return false;
+    }
+
+    protected function onSuccess(UserInterface $user)
+    {
+        $this->userManager->updateUser($user);
+    }
+}

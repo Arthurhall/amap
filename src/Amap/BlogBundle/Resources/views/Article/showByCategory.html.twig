@@ -1,0 +1,19 @@
+{% extends 'AmapMainBundle::layout.html.twig' %}
+
+{% block title %}
+    {{parent()}}
+    - Le Blog : Catégorie {{ category.title }}
+{% endblock %}
+
+{% block content -%}
+    
+    <ul class="breadcrumb">
+	    <li><a href="{{ path('home') }}"><i class="icon-home"></i> Home</a> <span class="divider">></span></li>
+	    <li><a href="{{ path('blog') }}">Blog</a> <span class="divider">></span></li>
+	    <li><a href="{{ path('blog_category', {'slug': category.slug}) }}">{{ category.title }}</a></li>
+    </ul>
+    
+    {% include 'AmapBlogBundle:Article:_list.html.twig' with {'options': {'delete': false} } %}
+
+    
+{% endblock %}

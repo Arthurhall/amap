@@ -1,0 +1,116 @@
+{% block form_row %}
+    
+	{% spaceless %}
+	{{ form_errors(form) }}
+	<div class="form_row control-group{% if errors|length > 0 %} error{% endif %}">
+		{{ form_label(form) }}
+		{{ form_widget(form) }}
+	</div>
+	{% endspaceless %}
+	
+{% endblock form_row %}
+
+{% block form_widget_simple %}
+{% spaceless %}
+    {% set type = type|default('text') %}
+    {% if type == 'email' %}
+    <div class="form_widget controls">
+        <div class="input-prepend">
+	        <span class="add-on" data-toggle="tooltip" data-original-title="{{type}}"><i class="icon-envelope"></i></span>
+	        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    </div>
+    {% elseif type == 'text' %}
+    <div class="form_widget controls">
+        <div class="input-prepend">
+            <span class="add-on" data-toggle="tooltip" data-original-title="{{type}}"><i class="icon-pencil"></i></span>
+            <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    </div>
+    {% elseif type == 'password' %}
+    <div class="form_widget controls">
+        <div class="input-prepend">
+            <span class="add-on" data-toggle="tooltip" data-original-title="{{type}}"><i class="icon-eye-close"></i></span>
+            <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    </div>
+    {% else %}
+    <div class="form_widget controls">
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    </div>
+    {% endif %}
+    
+{% endspaceless %}
+{% endblock form_widget_simple %}
+
+
+{% block choice_widget %}
+{% spaceless %}
+<div class="form_widget controls">
+    {% if expanded %}
+        {{ block('choice_widget_expanded') }}
+    {% else %}
+        {{ block('choice_widget_collapsed') }}
+    {% endif %}
+</div>
+{% endspaceless %}
+{% endblock choice_widget %}
+
+{% block textarea_widget %}
+{% spaceless %}
+<div class="form_widget controls">
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+</div>
+{% endspaceless %}
+{% endblock textarea_widget %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+<div class="form_widget controls">
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+</div>
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <div >
+    <ul class="form_errors alert alert-error">
+        {% for error in errors %}
+            <li>{{
+                error.messagePluralization is null
+                    ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                    : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+            }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}
+
+
+{% block form_label %}
+{% spaceless %}
+    
+    {% set label_attr = label_attr|merge({'class': 'control-label'}) %}
+    
+    {% if not compound %}
+        {% set label_attr = label_attr|merge({'for': id}) %}
+    {% endif %}
+    {% if required %}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% if label|trim is not empty %}
+            {% set label_asterix = '<span class="required" title="Ce champ est obligatoire">*</span>' %}
+        {% endif %}
+    {% endif %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {{ label|trans({}, translation_domain) }} {% if label_asterix is defined %} {{label_asterix|raw}} {% endif %}
+    </label>
+{% endspaceless %}
+{% endblock form_label %}
+

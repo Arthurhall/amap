@@ -1,0 +1,28 @@
+parameters:
+    sonata.user.admin.user.entity: Amap\UserBundle\Entity\User
+    sonata.user.admin.user.class:  Amap\UserBundle\Admin\Entity\UserAdmin
+    
+    security.user.provider.entity.class: Amap\UserBundle\Security\Core\User\EntityUserProvider
+    
+services:
+#    amap_user.example:
+#        class: %amap_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    amap_user.registration.form.type:
+        class: Amap\UserBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: amap_user_registration }
+            
+    security.user.provider.entity:
+        class: %security.user.provider.entity.class%
+        abstract: true
+        public: false
+        arguments: ['@security.user.entity_manager']
+        
+    sonata.user.profile.form.type: 
+        class: Amap\UserBundle\Form\Type\ProfileType
+        arguments: [%fos_user.model.user.class%]
+        tags: 
+            - { name: form.type, alias: sonata_user_profile } 

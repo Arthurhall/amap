@@ -1,0 +1,25 @@
+{% for entity in entities %}
+    <article class="well box clearfix">
+    	
+    	{% if entity.imageVitrine %}
+            {% set img = entity.imageVitrine %}
+            {% set webPath = '/' ~ img.webPath %}
+	    	<a class="thumbnail pull-left" href="{{path('blog_show', {'slug': entity.slug})}}" title="{{entity.title}}">
+	    		<img src="{{ webPath | apply_filter('blog_thumb') }}" alt="{{img.alt}}" /><!-- class="img-circle" -->
+	    	</a>
+    	{% endif %}
+    	
+	    <h2>
+	    	<a class="shadow" href="{{path('blog_show', {'slug': entity.slug})}}">
+	    		{{entity.title}}
+	    	</a>
+	    </h2>
+	    
+	    <p><i class="icon-calendar"></i> Publié le : <span class="label label-success">{{entity.publishedAt|localizeddate('medium', 'none')}}</span></p>
+	    <p><i class="icon-user"></i> Auteur : <span class="label label-success">{{entity.user}}</span></p>
+	    
+	    
+	    {% include 'AmapBlogBundle:Article:_crud_btn_group.html.twig' with {options:{'pull': 'right'}} %}
+	    
+    </article>
+{% endfor %}
