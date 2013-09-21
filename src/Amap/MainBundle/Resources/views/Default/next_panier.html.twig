@@ -21,7 +21,7 @@
 	        </li>
 	    {% endfor %}
 	    
-	    {% if app.user is not null and app.user.nbEggs > 1 %}
+	    {% if app.user is not null and app.user.nbEggs > 1 and delivery.withEggs %}
 	       <li class="text-warning">
 	       	   <i class="icon-hand-right"></i>
 	           <strong>{{app.user.nbEggs}} Oeufs</strong>

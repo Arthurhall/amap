@@ -13,18 +13,19 @@
 		Prochaine{{pluriel}} commande{{pluriel}} exceptionnelle{{pluriel}}
 	</h4>
 	
-	<hr class="divider" />
+	
 	
 	{% for delivery in deliveries %}
 	
 		{% set panierAddon = delivery.panierAddon %}
 		{% set plength = panierAddon|length %}
 		
+		{#
 	    <h5 class="text-success">
 	    	<i class="icon-star"></i>
 	    	Commande{% if plength>1 %}s{% endif %} exceptionnelle{% if plength>1 %}s{% endif %} !
 	    </h5>
-	    
+	    #}
 	    
 	    <div class="panier_addon">
 	    {% for panier in delivery.panierAddon %}
@@ -32,7 +33,7 @@
 		        <li class="nav-header">
 			        <small>
 			        	<i class="icon-calendar"></i>
-			            Livré le : 
+			            Livraison le : 
 			            {{ delivery.deliveredAt | localizeddate('medium', 'none') | label('success') }}
 			        </small>
 		        </li>
@@ -43,16 +44,21 @@
 	            </li>
 	        {% endfor %}
 	        </ul>
+	        
 	        <div class="control-group">
-	        <a href="{{ path('commande_new', {'panierAddon': panier.id, 'delivery': delivery.id}) }}" class="btn btn-success">
-	        	<i class="icon-shopping-cart"></i>
-	        	Je commande
-	        </a>
+		        <a href="{{ path('commande_new', {'panierAddon': panier.id, 'delivery': delivery.id}) }}" class="btn btn-success">
+		        	<i class="icon-shopping-cart"></i>
+		        	Je commande
+		        </a>
 	        </div>
+	        
 	    {% endfor %}
 	    </div>
 	    
-	    <hr class="divider" />
+        {% if not loop.last %}
+           <hr class="divider" />
+        {% endif %}
+        
     {% endfor %} {# deliveries #}
     
 </div>
