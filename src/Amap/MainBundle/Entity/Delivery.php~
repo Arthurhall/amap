@@ -35,7 +35,14 @@ class Delivery
      * @ORM\Column(name="is_sent", type="boolean", nullable=true)
      */
     private $isSent;
-
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="with_eggs", type="boolean", nullable=true)
+     */
+    private $withEggs;
+    
     /**
      * @var \DateTime
      *
@@ -122,7 +129,9 @@ class Delivery
     public function __construct()
     {
 		$this->panierAddon = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+		$this->isSent = false;
+        $this->withEggs = false;
+	}
     
 	public function __toString() 
 	{
@@ -346,5 +355,51 @@ class Delivery
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set isSent
+     *
+     * @param boolean $isSent
+     * @return Delivery
+     */
+    public function setIsSent($isSent)
+    {
+        $this->isSent = $isSent;
+    
+        return $this;
+    }
+
+    /**
+     * Get isSent
+     *
+     * @return boolean 
+     */
+    public function getIsSent()
+    {
+        return $this->isSent;
+    }
+
+    /**
+     * Set sentAt
+     *
+     * @param \DateTime $sentAt
+     * @return Delivery
+     */
+    public function setSentAt($sentAt)
+    {
+        $this->sentAt = $sentAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get sentAt
+     *
+     * @return \DateTime 
+     */
+    public function getSentAt()
+    {
+        return $this->sentAt;
     }
 }

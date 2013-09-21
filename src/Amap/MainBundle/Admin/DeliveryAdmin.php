@@ -73,16 +73,20 @@ class DeliveryAdmin extends Admin
 			$msg = 'Le mail a bien été envoyé';
 			$this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_success', $msg);
 		}
-		else {
+		else if ($object->getSentAt() instanceof \DateTime) {
 			$msg = 'Cette Livraison à déjà été envoyé par mail le '.$object->getSentAt()->format('d/m/Y').' et ne sera donc pas renvoyée.';
 			$this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_warning', $msg);
 		}
+        else {
+            $msg = 'Vous pourrez envoyé le détail de cette livraison par mail plus tard.';
+            $this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_warning', $msg);
+        }
 	}
 	
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-        	->add('deliveredAt', null, array('label' => 'Livré le'))
+        	->add('deliveredAt', 'date', array('label' => 'Livré le'))
 			
             ->add('panierMaxi', 'sonata_type_model', array(
             	'label' => 'Grand Panier',
@@ -127,7 +131,11 @@ class DeliveryAdmin extends Admin
 				'label' => 'Envoyé par mail aux membres',
 				'required' => false,
 			))
-			
+			->add('withEggs', null, array(
+                'label' => 'Avec Oeufs',
+                'required' => false,
+            ))
+            
 			->setHelps(array(
                 'panierAddon' => 'Pour sélectionner plusieurs paniers maintenez Ctrl puis clickez.',
                 'panierMaxi' => 'Vous pouvez réutiliser un panier existant. Le libellé des grands et petits paniers est construit de la manière suivante : [identifiant unique] - [date de création du panier] - [prix exacte non remisé]',
@@ -145,6 +153,7 @@ class DeliveryAdmin extends Admin
             ->add('createdAt', 'doctrine_orm_date', array('input_type' => 'date', 'label' => 'Créé le'))
 			->add('updatedAt', 'doctrine_orm_date', array('input_type' => 'date', 'label' => 'Modifié le'))
             ->add('deliveredAt', 'doctrine_orm_date', array('input_type' => 'date', 'label' => 'Livré le'))
+            ->add('withEggs', null, array('label' => 'Avec Oeufs'))
         ;
     }
 
@@ -153,8 +162,10 @@ class DeliveryAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->add('deliveredAt', null, array('label' => 'Livraison du'))
+            ->add('withEggs', null, array('label' => 'Avec Oeufs', 'editable' => true))
             ->add('panierMaxi', null, array('label' => 'Grand Panier'))
             ->add('panierMini', null, array('label' => 'Petit Panier'))
+            ->add('panierAddon', null, array('label' => 'Panier Exceptionnel'))
 			->add('createdAt', null, array('label' => 'Créé le'))
             ->add('updatedAt', null, array('label' => 'Modifié le'))
             

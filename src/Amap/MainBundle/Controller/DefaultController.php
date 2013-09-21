@@ -34,6 +34,7 @@ class DefaultController extends Controller
         
         return $this->render('AmapMainBundle:Default:search_result.html.twig', array(
             'entities'      => $entities,
+            'search'        => $search,
         ));
 	}
 	
@@ -48,6 +49,17 @@ class DefaultController extends Controller
         ));
 	}
 	
+    public function nextPanierAddonsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $deliveries = $em->getRepository('AmapMainBundle:Delivery')->findNextPanierAddons();
+        
+        return $this->render('AmapMainBundle:Default:next_panier_addons.html.twig', array(
+            'deliveries'      => $deliveries,
+        ));
+    }
+    
 	public function pluploadAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

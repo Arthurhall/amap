@@ -10,7 +10,7 @@
     {% if entities|length > 1 %} {% set pluriel = 's' %}
     {% else %} {% set pluriel = '' %} {% endif %}
     
-    <h1>{{entities|length}} Résultat{{pluriel}}</h1>
+    <h1>{{entities|length}} Résultat{{pluriel}} &laquo; {{search}} &raquo;</h1>
     
     {% include 'AmapBlogBundle:Article:_list.html.twig' %}
     

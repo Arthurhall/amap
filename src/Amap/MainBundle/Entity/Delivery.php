@@ -4,6 +4,8 @@ namespace Amap\MainBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Delivery
@@ -21,6 +23,15 @@ class Delivery
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+    
+    
+    // public static function loadValidatorMetadata(ClassMetadata $metadata)
+    // {
+        // $metadata->addConstraint(new UniqueEntity(array(
+            // 'fields'  => 'deliveredAt',
+            // 'message' => '',
+        // )));
+    // }
 	
 	/**
      * @var string
@@ -35,7 +46,14 @@ class Delivery
      * @ORM\Column(name="is_sent", type="boolean", nullable=true)
      */
     private $isSent;
-
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="with_eggs", type="boolean", nullable=true)
+     */
+    private $withEggs;
+    
     /**
      * @var \DateTime
      *
@@ -123,6 +141,7 @@ class Delivery
     {
 		$this->panierAddon = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->isSent = false;
+        $this->withEggs = false;
 	}
     
 	public function __toString() 
@@ -393,5 +412,28 @@ class Delivery
     public function getSentAt()
     {
         return $this->sentAt;
+    }
+
+    /**
+     * Set withEggs
+     *
+     * @param boolean $withEggs
+     * @return Delivery
+     */
+    public function setWithEggs($withEggs)
+    {
+        $this->withEggs = $withEggs;
+    
+        return $this;
+    }
+
+    /**
+     * Get withEggs
+     *
+     * @return boolean 
+     */
+    public function getWithEggs()
+    {
+        return $this->withEggs;
     }
 }

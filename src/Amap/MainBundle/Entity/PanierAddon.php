@@ -130,7 +130,7 @@ class PanierAddon extends PanierAbstract
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return PanierMaxi
+     * @return PanierAddon
      */
     public function setCreatedAt($createdAt)
     {
@@ -153,7 +153,7 @@ class PanierAddon extends PanierAbstract
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return PanierMaxi
+     * @return PanierAddon
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -176,7 +176,7 @@ class PanierAddon extends PanierAbstract
      * Set message
      *
      * @param string $message
-     * @return PanierMaxi
+     * @return PanierAddon
      */
     public function setMessage($message)
     {
@@ -199,7 +199,7 @@ class PanierAddon extends PanierAbstract
      * Set price
      *
      * @param float $price
-     * @return PanierMaxi
+     * @return PanierAddon
      */
     public function setPrice($price)
     {
@@ -222,7 +222,7 @@ class PanierAddon extends PanierAbstract
      * Set discountedPrice
      *
      * @param float $discountedPrice
-     * @return PanierMaxi
+     * @return PanierAddon
      */
     public function setDiscountedPrice($discountedPrice)
     {
@@ -253,7 +253,7 @@ class PanierAddon extends PanierAbstract
      * Add product
      *
      * @param \Amap\MainBundle\Entity\Product $product
-     * @return PanierMaxi
+     * @return PanierAddon
      */
     public function addProduct(\Amap\MainBundle\Entity\Product $product)
     {

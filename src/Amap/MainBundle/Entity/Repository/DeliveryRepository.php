@@ -9,6 +9,27 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class DeliveryRepository extends EntityRepository
 {
+    public function findNextPanierAddons()
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->addSelect('padd')
+            ->addSelect('padd_prod')
+            ->orderBy('d.deliveredAt', 'ASC')
+            
+            ->innerJoin('d.panierAddon', 'padd')
+            ->leftJoin('padd.product', 'padd_prod')
+            
+            ->where('d.deliveredAt > :now')
+            ->setParameter('now', $this->getNow())
+        ;
+        
+        $r = $qb->getQuery()
+            ->getResult()
+        ;
+        
+        return $r;
+    }
+    
 	public function findNextOneWithJoin()
 	{
 		$qb = $this->createQueryBuilder('d')

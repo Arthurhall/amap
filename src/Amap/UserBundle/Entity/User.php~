@@ -19,6 +19,13 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="nb_eggs", type="integer", nullable=true)
+     */
+    protected $nbEggs;
 	
 	/**
      * @ORM\OneToMany(targetEntity="Amap\MainBundle\Entity\Article", mappedBy="user")
@@ -31,9 +38,15 @@ class User extends BaseUser
     private $commandes; 
 	
 	/**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Amap\MainBundle\Entity\Permanence", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="Amap\MainBundle\Entity\Permanence", inversedBy="users", cascade={"persist", "detach"})
+     * @ORM\JoinTable(name="user_has_permanence",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="permanence_id", referencedColumnName="id")
+     *   }
+     * )
      */
     private $permanences;
 
@@ -56,6 +69,20 @@ class User extends BaseUser
 			foreach ($this->articles as $key => $article) 
 			{
 				if($id == $article->getId()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public function hasPermanence($id)
+	{
+		if($id > 0)
+		{
+			foreach ($this->permanences as $key => $perm) 
+			{
+				if($id == $perm->getId()) {
 					return true;
 				}
 			}
@@ -139,4 +166,37 @@ class User extends BaseUser
         return $this->commandes;
     }
 	
+    /**
+     * Add permanences
+     *
+     * @param \Amap\MainBundle\Entity\Permanence $permanences
+     * @return User
+     */
+    public function addPermanence(\Amap\MainBundle\Entity\Permanence $permanences)
+    {
+        $this->permanences[] = $permanences;
+    
+        return $this;
+    }
+
+    /**
+     * Remove permanences
+     *
+     * @param \Amap\MainBundle\Entity\Permanence $permanences
+     */
+    public function removePermanence(\Amap\MainBundle\Entity\Permanence $permanences)
+    {
+        $this->permanences->removeElement($permanences);
+    }
+
+    /**
+     * Get permanences
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPermanences()
+    {
+        return $this->permanences;
+    }
+
 }

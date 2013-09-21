@@ -19,6 +19,13 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="nb_eggs", type="integer", nullable=false)
+     */
+    protected $nbEggs;
 	
 	/**
      * @ORM\OneToMany(targetEntity="Amap\MainBundle\Entity\Article", mappedBy="user")
@@ -50,6 +57,7 @@ class User extends BaseUser
     {
     	parent::__construct();
 		
+        $this->nbEggs = 0;
         $this->articles = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->commandes = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->permanences = new \Doctrine\Common\Collections\ArrayCollection();
@@ -190,6 +198,29 @@ class User extends BaseUser
     public function getPermanences()
     {
         return $this->permanences;
+    }
+
+    /**
+     * Set nbEggs
+     *
+     * @param integer $nbEggs
+     * @return User
+     */
+    public function setNbEggs($nbEggs)
+    {
+        $this->nbEggs = $nbEggs;
+    
+        return $this;
+    }
+
+    /**
+     * Get nbEggs
+     *
+     * @return integer 
+     */
+    public function getNbEggs()
+    {
+        return $this->nbEggs;
     }
 
 }

@@ -118,12 +118,14 @@ class ArticleAdmin extends Admin
     {
         $datagridMapper
         	->add('title')
-            ->add('content')
+            ->add('isPublished')
+            ->add('isHome')
+            //->add('content')
 			->add('category')
             ->add('createdAt', 'doctrine_orm_date', array('input_type' => 'date'))
 			->add('updatedAt', 'doctrine_orm_date', array('input_type' => 'date'))
             ->add('publishedAt', 'doctrine_orm_date', array('input_type' => 'date'))
-            ->add('isPublished')
+            
         ;
     }
 

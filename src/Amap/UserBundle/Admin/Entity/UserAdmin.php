@@ -79,6 +79,9 @@ class UserAdmin extends BaseUserAdmin
             ->with('Groups')
                 ->add('groups')
             ->end()
+            ->with('Oeufs')
+                ->add('nbEggs')
+            ->end()
             ->with('Profile')
                 ->add('dateOfBirth')
                 ->add('firstname')
@@ -124,6 +127,9 @@ class UserAdmin extends BaseUserAdmin
 	                'multiple' => true, 
 	                'compound' => false
 				))
+            ->end()
+            ->with('Oeufs')
+                ->add('nbEggs', null, array('label' => 'Nombre d\'oeufs'))
             ->end()
             ->with('Profile')
                 ->add('dateOfBirth', 'birthday', array('required' => false))
