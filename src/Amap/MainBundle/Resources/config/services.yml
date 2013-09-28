@@ -89,7 +89,7 @@ services:
     admin.commande:
         class: Amap\MainBundle\Admin\CommandeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: %sonata.user.admin.groupname%, label: Commandes de paniers exceptionnels }
+            - { name: sonata.admin, manager_type: orm, group: %sonata.user.admin.groupname%, label: Commandes de paniers exceptionnels, show_in_dashboard: true }
         arguments: [ null, Amap\MainBundle\Entity\Commande, SonataAdminBundle:CRUD ]
         
     admin.permanence:

@@ -3,6 +3,7 @@
 namespace Amap\UserBundle\Entity;
  
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
+use FOS\UserBundle\Model\GroupInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -223,4 +224,24 @@ class User extends BaseUser
         return $this->nbEggs;
     }
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    protected $groups;
+
+
+    public function getGroups()
+    {
+        return parent::getGroups();
+    }
+
+    public function addGroup(GroupInterface $group)
+    {
+        return parent::addGroup($group);
+    }
+
+    public function removeGroup(GroupInterface $group)
+    {
+		return parent::removeGroup($group);
+    }
 }

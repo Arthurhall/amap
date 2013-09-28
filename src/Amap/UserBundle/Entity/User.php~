@@ -3,6 +3,7 @@
 namespace Amap\UserBundle\Entity;
  
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
+use FOS\UserBundle\Model\GroupInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,7 +24,7 @@ class User extends BaseUser
     /**
      * @var integer
      * 
-     * @ORM\Column(name="nb_eggs", type="integer", nullable=true)
+     * @ORM\Column(name="nb_eggs", type="integer", nullable=false)
      */
     protected $nbEggs;
 	
@@ -57,6 +58,7 @@ class User extends BaseUser
     {
     	parent::__construct();
 		
+        $this->nbEggs = 0;
         $this->articles = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->commandes = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->permanences = new \Doctrine\Common\Collections\ArrayCollection();
@@ -199,4 +201,47 @@ class User extends BaseUser
         return $this->permanences;
     }
 
+    /**
+     * Set nbEggs
+     *
+     * @param integer $nbEggs
+     * @return User
+     */
+    public function setNbEggs($nbEggs)
+    {
+        $this->nbEggs = $nbEggs;
+    
+        return $this;
+    }
+
+    /**
+     * Get nbEggs
+     *
+     * @return integer 
+     */
+    public function getNbEggs()
+    {
+        return $this->nbEggs;
+    }
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    protected $groups;
+
+
+    public function getGroups()
+    {
+        return parent::getGroups();
+    }
+
+    public function addGroup(GroupInterface $group)
+    {
+        return parent::addGroup($group);
+    }
+
+    public function removeGroup(GroupInterface $group)
+    {
+		return parent::removeGroup($group);
+    }
 }
