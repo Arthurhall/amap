@@ -122,7 +122,10 @@ class Image
 		$uniqid = uniqid();
         
         if(null !== $this->file) {
-            $name = $uniqid.'.'.$this->file->guessExtension();
+            // $name = $uniqid.'.'.$this->file->guessExtension(); // Need php_fileinfo extension
+            $explode = explode('.', $this->file->getClientOriginalName());
+            $extension = end($explode);
+            $name = $uniqid.'.'.$extension; 
             $this->file->move($this->getUploadRootDir(), $name);
             $this->path = $name;   
         }

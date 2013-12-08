@@ -1,0 +1,3 @@
+parameters:
+	captcha_public_key: xxxxxxxxxxxxxxxxxxx 
+    captcha_private_key: xxxxxxxxxxxxxxxxxxx

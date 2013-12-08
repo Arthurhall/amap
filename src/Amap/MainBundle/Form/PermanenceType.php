@@ -13,6 +13,8 @@ class PermanenceType extends AbstractType
         $builder
         	->add('deliveryDate', 'date', array(
         		'label' => 'Date',
+        		'widget' => 'single_text',
+    			'format' => 'yyyy-MM-dd',
 			))
             ->add('userDetail', 'hidden')
 			->add('heure', 'hidden', array(

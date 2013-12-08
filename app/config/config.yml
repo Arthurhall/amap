@@ -1,4 +1,5 @@
 imports:
+    - { resource: additional_parameters.yml }
     - { resource: parameters.yml }
     - { resource: security.yml }
 
@@ -147,6 +148,8 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts:   [admin]
+        sonata.admin.block.search_result:
+            contexts:   [admin]
         sonata.block.service.text:
         sonata.block.service.action:
         sonata.block.service.rss:
@@ -219,8 +222,8 @@ sonata_user:
     
 ewz_recaptcha:
     enabled: true
-    public_key:   6LceieYSAAAAAPkLjOpqtLkvk9972nXBPv7XsojP 
-    private_key:  6LceieYSAAAAACjjtmXWjoLdG81SPRzHlUocs8gM
+    public_key:   %captcha_public_key% 
+    private_key:  %captcha_private_key%
     secure:       false
     locale_key:   kernel.default_locale
     
@@ -234,6 +237,7 @@ stfalcon_tinymce:
     include_jquery: false
     tinymce_jquery: false
     textarea_class: "tinymce"
+    #selector: ".tinymce"
     language: %locale%
     theme: 
         advanced:

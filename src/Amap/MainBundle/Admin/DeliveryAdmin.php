@@ -21,9 +21,9 @@ class DeliveryAdmin extends Admin
 	
 	protected function configureRoutes(RouteCollection $collection)
     {
-		$collection
-			->remove('delete')
-		;
+		// $collection
+			// ->remove('delete')
+		// ;
     }
 	
 	/*
@@ -41,7 +41,6 @@ class DeliveryAdmin extends Admin
         $this->templating = $tpl;
     }
 	
-	
 	public function postPersist($object)
 	{
 		$this->sendMail($object);
@@ -55,12 +54,12 @@ class DeliveryAdmin extends Admin
 	public function sendMail($object)
 	{
 		//$members = $this->em->getRepository('AmapUserBundle:User')->findMembers();
-		if($object->getIsSent() && !$object->getSentAt()) 
+		if($object->getIsSent() && !$object->getSentAt() && 1===preg_match("/^[^@]*@[^@]*\.[^@]*$/", $object->getSentTo())) 
 		{
 			$message = \Swift_Message::newInstance()
 				->setSubject('Amap Panier du '.$object->getDeliveredAt()->format('d/m/Y'))
 				->setFrom('noreply@arthurhall.fr')
-				->setTo('test.ter@arthurhall.fr')
+				->setTo($object->getSentTo()) // 'test.ter@arthurhall.fr'
 				->setCharset('UTF-8')    
 				->setContentType('text/html')
 				->setBody($this->templating->render('AmapPanierBundle:Delivery:email.html.twig', array('delivery' => $object)))
@@ -77,11 +76,17 @@ class DeliveryAdmin extends Admin
 			$msg = 'Cette Livraison à déjà été envoyé par mail le '.$object->getSentAt()->format('d/m/Y').' et ne sera donc pas renvoyée.';
 			$this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_warning', $msg);
 		}
+		else if (!$object->getSentAt() && 1!==preg_match("/^[^@]*@[^@]*\.[^@]*$/", $object->getSentTo())) {
+            $msg = 'Vous devez renseigner une adresse mail de groupe valide dans le champ "Adresse mail des membres", Le mail n\'a pas été envoyé !';
+            $this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_error', $msg);
+            $object->setIsSent(false);
+        }
         else {
             $msg = 'Vous pourrez envoyé le détail de cette livraison par mail plus tard.';
             $this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_warning', $msg);
         }
 	}
+
 	
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -128,11 +133,18 @@ class DeliveryAdmin extends Admin
                 'compound' => false
             ))
 			->add('isSent', null, array(
-				'label' => 'Envoyé par mail aux membres',
+				'label' => ' : Envoyé par mail aux membres',
 				'required' => false,
 			))
+            ->add('sentTo', null, array(
+                'label' => 'Adresse mail des membres',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'well',
+                )
+            ))
 			->add('withEggs', null, array(
-                'label' => 'Avec Oeufs',
+                'label' => ' : Avec Oeufs',
                 'required' => false,
             ))
             
@@ -141,6 +153,7 @@ class DeliveryAdmin extends Admin
                 'panierMaxi' => 'Vous pouvez réutiliser un panier existant. Le libellé des grands et petits paniers est construit de la manière suivante : [identifiant unique] - [date de création du panier] - [prix exacte non remisé]',
                 'panierMini' => 'Vous pouvez réutiliser un panier existant.',
                 'image' => 'Un cadre bleu apparait autour des images sélectionnées',
+                'sentTo' => 'Type : ...@yahooGroupes.com',
             ))
         ;
     }

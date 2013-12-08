@@ -282,11 +282,16 @@ class DefaultController extends Controller
             ), $jsonResp);
             return $this->createJsonResponse( $jsonResp );
 		}
+		// echo "<pre>";
+		// print_r($form->getErrors());
+		// die();
+		
+		$err = $this->implode_r(' | ', $this->getErrorMessages($form));
 		
         // Form is not valid :
         $jsonResp = array(
             "error" => true, 
-            "message" => "Une erreur est survenue",
+            "message" => "Une erreur est survenue : ".$err,
         );
 		return $this->createJsonResponse( $jsonResp );
 	}
@@ -313,7 +318,41 @@ class DefaultController extends Controller
         return $response;
 	}
 	
+	private function getErrorMessages(\Symfony\Component\Form\Form $form) 
+	{
+	    $errors = array();
 	
+	    foreach ($form->getErrors() as $key => $error) {
+	            $errors[$key] = $error->getMessage();
+	    }
+	
+	    foreach ($form->all() as $child) {
+	        if (!$child->isValid()) {
+	            $errors[$child->getName()] = $this->getErrorMessages($child);
+	        }
+	    }
+		// To get all errors as a string :
+		// $string = var_export($this->getErrorMessages($form), true);
+		
+	    return $errors;
+	}
+	
+	public function implode_r($glue,$arr)
+	{
+        $ret_str = "";
+        foreach($arr as $k => $a){
+    		if(is_array($a)) {
+    			$ret_str .= $k.'#';
+    			$ret_str .= $this->implode_r($glue,$a);
+    		} else {
+				$ret_str .= "," . $k.'#'.$a;
+			}
+            //$ret_str .= (is_array($a)) ? $this->implode_r($glue,$a) : "," . $k.'#'.$a;
+        }
+        return $ret_str;
+	}
+
+
 	
 	public function nosProduitsAction()
 	{

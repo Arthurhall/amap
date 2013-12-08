@@ -3,4 +3,8 @@
     height: 300px ;
 }
 
-
+.content .form-horizontal label.checkbox {
+    margin-left:163px;
+    margin-top:30px;
+    margin-bottom:30px;
+}

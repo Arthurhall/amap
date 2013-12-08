@@ -4,7 +4,7 @@ security:
  
     role_hierarchy:
         ROLE_MEMBER:      ROLE_USER
-        ROLE_ADMIN:       [ROLE_USER, ROLE_MEMBER]
+        ROLE_ADMIN:       [ROLE_USER, ROLE_MEMBER, ROLE_SONATA_ADMIN]
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_SONATA_ADMIN, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
         SONATA:
             - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT  # if you are not using acl then this line must be uncommented

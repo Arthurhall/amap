@@ -6,12 +6,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Delivery
  *
  * @ORM\Table(name="delivery")
  * @ORM\Entity(repositoryClass="Amap\MainBundle\Entity\Repository\DeliveryRepository")
+ * @UniqueEntity(
+ *     fields={"deliveredAt"},
+ *     errorPath="deliveredAt",
+ *     message="Une livraison est déjà programmé à cette date !"
+ * )
  */
 class Delivery
 {
@@ -48,6 +54,14 @@ class Delivery
     private $isSent;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="sent_to", type="string", nullable=true, length=100)
+     * @Assert\Email()
+     */
+    private $sentTo;
+    
+    /**
      * @var boolean
      *
      * @ORM\Column(name="with_eggs", type="boolean", nullable=true)
@@ -58,6 +72,7 @@ class Delivery
      * @var \DateTime
      *
      * @ORM\Column(name="delivered_at", type="datetime", nullable=false, unique=true)
+     * @Assert\NotBlank()
      */
     private $deliveredAt;
 	
@@ -435,5 +450,28 @@ class Delivery
     public function getWithEggs()
     {
         return $this->withEggs;
+    }
+
+    /**
+     * Set sentTo
+     *
+     * @param string $sentTo
+     * @return Delivery
+     */
+    public function setSentTo($sentTo)
+    {
+        $this->sentTo = $sentTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get sentTo
+     *
+     * @return string 
+     */
+    public function getSentTo()
+    {
+        return $this->sentTo;
     }
 }
